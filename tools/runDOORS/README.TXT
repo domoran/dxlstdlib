@@ -1,0 +1,1 @@
+runDOORS.exe will look in the registry where DOORS is installed and start it, passing all commandline parameters to DOORS. If you have multiple versions of DOORS installed, runDOORS.exe will start the first it finds. 

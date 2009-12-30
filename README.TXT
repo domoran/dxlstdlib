@@ -1,0 +1,1 @@
+The DOORS Standard Library is a project founded in 2010 by Mathias Mamsch. Its aim is to provide the users of Rational(R) DOORS(R) with a consistent and tested set of functions, that will handle tedious and error prone tasks. If you want to contribute to this project you can contact me by e-mail: mmamsch@googlemail.com.
