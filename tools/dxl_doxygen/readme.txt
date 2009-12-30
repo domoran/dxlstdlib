@@ -1,4 +1,4 @@
-This is a modifed binary version of DOXYGEN Version 1.6.1, which has been released under the GNU-GPL Version 2. 
+This is a modifed binary version of DOXYGEN Version 1.6.1, which has been released under the GNU-GPL Version 2 (See DOXYGEN_LICENSE.TXT). 
 
 In the original binary the string "inc" has been replaced by "$$$" to enable the reassignment of INC files to another language. Afterwards the binary has been compressed using the UPX packer. 
 
