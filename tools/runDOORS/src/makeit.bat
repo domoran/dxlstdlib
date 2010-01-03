@@ -27,12 +27,6 @@ if errorlevel 1 goto errlink
 dir "runDOORS.*"
 copy runDOORS.exe ..
 
-REM runDOORS.exe -x -u -v
-REM runDOORS.exe -P -r -d
-REM runDOORS.exe -data 34466@localhost -user test -v
-
-del runDOORS.obj
-del runDOORS.exe    
 goto TheEnd
 
 :errlink

@@ -26,8 +26,6 @@ s:\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "setupDOORS.obj"
 if errorlevel 1 goto errlink
 dir "setupDOORS.*"
 copy setupDOORS.exe ..
-del setupDOORS.obj
-REM del setupDOORS.exe    
 goto TheEnd
 
 :errlink
