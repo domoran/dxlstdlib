@@ -73,15 +73,19 @@ int profile_findFactor ( void fn() ) {
 }
 
 string profiler_formatReal (real n, int comma) {
+    int i
     real fac = pow(10.0,realOf comma)
-    return ((realOf intOf (n * fac)) / fac) ""
+    string s = ((realOf intOf (n * fac)) / fac) ""
+    for i in 0:(length s)-1 do if (s[i] == '.' || s[i] == ',') break
+    if (comma == 0) return s[0:i-1]
+    return s[0:i+comma]
 }
 
 string formatMSTime (real mstime) {
     real EFCs = (grProfiler_EmptyFunctionCallTime == 0.0) ? 0.0 : (mstime / grProfiler_EmptyFunctionCallTime)
     string EFCString = (EFCs == 0.0) ? "" : " (= " profiler_formatReal(EFCs,3) " EFC)"
     if (mstime < 1E-3)                   return profiler_formatReal(mstime*1000000.0,3) " ns" EFCString
-    if (mstime > 1E-3 && mstime <= 1E-0) return profiler_formatReal(mstime*1000.0,3   ) " us" EFCString
+    if (mstime > 1E-3 && mstime <= 1E-0) return profiler_formatReal(mstime*1000.0,3   ) " " (isBatch() ? "u" : "\265") "s" EFCString
     if (mstime > 1E0  && mstime <= 1E3 ) return profiler_formatReal(mstime,3)           " ms" EFCString
     return  (profiler_formatReal(mstime / 1000.0, 3)) " s" EFCString
 }

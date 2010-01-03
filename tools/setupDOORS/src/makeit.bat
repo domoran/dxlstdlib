@@ -16,10 +16,32 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
-pushd
-cd ..
-for /F "delims=;" %%i in ('cd') do set PRJDIR=%%i
-popd
+if exist "setupDOORS.obj" del "setupDOORS.obj"
+if exist "setupDOORS.exe" del "setupDOORS.exe"
 
-"%PRJDIR%\tools\runDOORS\runDOORS.exe" -b "%PRJDIR%\build\runTests.dxl" -a "%PRJDIR%" -j "%PRJDIR%"
+s:\masm32\bin\ml /c /coff "setupDOORS.asm"
+if errorlevel 1 goto errasm
+
+s:\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "setupDOORS.obj"
+if errorlevel 1 goto errlink
+dir "setupDOORS.*"
+copy setupDOORS.exe ..
+del setupDOORS.obj
+REM del setupDOORS.exe    
+goto TheEnd
+
+:errlink
+echo _
+echo Link error
+goto TheEnd
+
+:errasm
+echo _
+echo Assembly Error
+goto TheEnd
+
+:TheEnd
+
+
+
 pause

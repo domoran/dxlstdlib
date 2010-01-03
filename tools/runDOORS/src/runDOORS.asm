@@ -22,6 +22,9 @@ comment * -----------------------------------------------------
     include \masm32\include\masm32rt.inc
     include \masm32\include\advapi32.inc
 
+    include ..\..\asm_includes\regMacros.inc
+    include ..\..\asm_includes\doorsSetup.inc
+
     includelib \masm32\lib\advapi32.lib
 ; ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
@@ -36,8 +39,6 @@ comment * -----------------------------------------------------
       doorsKey db "SOFTWARE\Telelogic\DOORS",0   
       execDir db "ExecutablesDirectory",0
       hyphen db 34,0
-      dotcomma db ";",0
-
       
       loginMessage1 db "------------------------------------------------------------------",10
                     db "                            runDOORS V.1.0                        ",10
@@ -51,6 +52,15 @@ comment * -----------------------------------------------------
       
       loginMessage4 db "If your DOORS database is configured to use no passwords, then",10
                     db "just leave the password blank.",10,10,0 
+
+      dataShort db "-d",0
+      dataLong db "-data",0
+
+      pwShort db "-P",0
+      pwLong db "-password",0
+
+      userShort db "-u",0
+      userLong db "-user",0
 
     .code
 
@@ -135,11 +145,18 @@ CHECK_SUCCESS macro msg:req
 endm
 
 
+
+
 main proc
     LOCAL regKey:DWORD
     LOCAL keyHandle:DWORD
     LOCAL strVar[256]:BYTE       
     LOCAL keyName[256]:BYTE
+    
+    LOCAL user[256]:BYTE
+    LOCAL database[512]:BYTE
+    LOCAL password[512]:BYTE
+
     LOCAL strPtr:DWORD
     LOCAL strSize:DWORD
     LOCAL valType:DWORD
@@ -147,6 +164,17 @@ main proc
     LOCAL argCount: DWORD
     LOCAL newCmdLine: DWORD
     LOCAL hConsole: DWORD
+    LOCAL hasPassword: DWORD
+    LOCAL hasUser: DWORD
+    LOCAL hasData: DWORD
+    LOCAL dataFound: DWORD
+
+
+    mov hasPassword, 0
+    mov hasUser, 0
+    mov hasData, 0
+    mov dataFound, 0
+
 
     mov strPtr, ptr$(strVar)
 
@@ -177,12 +205,8 @@ main proc
         print strPtr, 10,13        
         jmp endMain
     .endif
-
-    mov newCmdLine, alloc(1024)
-    cst newCmdLine, addr hyphen
-    mov eax, cat$(newCmdLine, strPtr, addr hyphen, " ")
     
-    ; get command line
+    ; scan the command line for configured parameters
     mov argCount, 1
 
     .while 1
@@ -192,19 +216,64 @@ main proc
             .break      
         .endif
 
-        .if argCount != 1
-            mov eax, cat$(newCmdLine, " ")
+        .if hasPassword == 0
+            mov hasPassword, rv(szCmp, addr keyName, addr pwShort) 
+            or hasPassword, rv(szCmp, addr keyName, addr pwLong) 
+        .endif
+        
+        .if hasUser == 0
+            mov hasUser, rv(szCmp, addr keyName, addr userLong)
+            or hasUser,  rv(szCmp, addr keyName, addr userShort) 
         .endif
 
-        mov eax, cat$(newCmdLine, addr hyphen, addr keyName, addr hyphen)
+        .if hasData == 0
+            mov hasData, rv(szCmp, addr keyName, addr dataShort) 
+            or hasData, rv(szCmp, addr keyName, addr dataLong)
+        .endif
 
         inc argCount
         
     .endw
+    ; read config data
+    mov dataFound, rv(readDOORSData, addr database, addr user, addr password)
 
-    ; Saving the login information in a file is not supported yet
-    ; call getDOORSData
+    ; start building the DOORS command line
+    mov newCmdLine, alloc(1024)
+    cst newCmdLine, addr hyphen
+    mov eax, cat$(newCmdLine, strPtr, addr hyphen)
+    
+    .if dataFound        
+        .if hasUser == 0 
+            mov eax, cat$(newCmdLine, " -u ", addr hyphen, addr user, addr hyphen)                
+        .endif 
 
+        .if hasPassword == 0 
+            .if rv(szLen, addr password) > 0
+                mov eax, cat$(newCmdLine, " -p ", addr hyphen, addr password, addr hyphen)                
+            .endif 
+        .endif 
+
+        .if hasData == 0 
+            mov eax, cat$(newCmdLine, " -d ", addr hyphen, addr database, addr hyphen)                
+        .endif 
+
+    .endif    
+
+    ; append the rest of the commandline
+    mov argCount, 1
+    
+    .while 1
+        mov argError, rv(getcl_ex , argCount, addr keyName)
+        
+        .if argError != 1  
+            .break      
+        .endif
+
+        mov eax, cat$(newCmdLine, " ", addr hyphen, addr keyName, addr hyphen)
+
+        inc argCount
+        
+    .endw
 
     invoke WinExec, newCmdLine, SW_SHOW	
 

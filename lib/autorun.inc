@@ -21,46 +21,48 @@
 //  Function   : generateAutoRunDXLFolderString
 //                               
 //  Description: generates a string containing '#include's of all
-//				 the files in the specified path (relative to doorsHome)
+//                 the files in the specified path (relative to doorsHome)
 //                                                                        
 //-----------------------------------------------------------------------------
 string generateAutoRunDXLFolderString(string sFilesPath)
 {
-	string sEvalStr = ""
-	string sIncStart = "#include <" sFilesPath "\\"
-	string s
-	string sLoc
-	string sDXLCheck = null
-	sLoc = sFilesPath
-	
-	Stat st = create(sLoc)
-	if (!null st)
-	{
-		for s in directory sLoc do
-		{
-			if(s == "." || s == "..")
-			{
-				//do nothing
-			}
-			else
-			{
-				sDXLCheck = null
-				sDXLCheck = checkDXL(sIncStart s ">")
-				if(null sDXLCheck)
-				{
-					sEvalStr = sEvalStr sIncStart s ">\n"
-				}
-				else
-				{
-				    //didn't pasre properly, so don't include it
-					print sDXLCheck "\n"
-				}
-			}
-		}
-	} else print "No files in or unknown directory " sLoc "\n"
+    string sEvalStr = ""
+    string sIncStart = "#include <" sFilesPath "\\"
+    string s
+    string sLoc
+    string sDXLCheck = null
+    sLoc = sFilesPath
+    
+    Stat st = create(sLoc)
+    if (!null st)
+    {
+        for s in directory sLoc do
+        {
+            int len = length s
+            if len < 5 then continue
+            
+            if(s == "." || s == ".." || 
+                 (s[len-4:len-1] != ".inc" && 
+                  s[len-4:len-1] != ".dxl") ) {
+                    //do nothing
+            } else {
+                sDXLCheck = null
+                sDXLCheck = checkDXL(sIncStart s ">")
+                if(null sDXLCheck)
+                {
+                    sEvalStr = sEvalStr sIncStart s ">\n"
+                }
+                else
+                {
+                    //didn't pasre properly, so don't include it
+                    print sDXLCheck "\n"
+                }
+            }
+        }
+    } else print "No files in or unknown directory " sLoc "\n"
     
     
-	return(sEvalStr)
+    return(sEvalStr)
 }
 
 //-----------------------------------------------------------------------------
@@ -68,15 +70,15 @@ string generateAutoRunDXLFolderString(string sFilesPath)
 //  Function   : autorun
 //                               
 //  Description: runs all the files in the specified directory as DXL.
-//				 This is used for startup, finish, formal menu functions
-//				 and project menu functions.
-//  Notes:		 eval_ runs the code in a separate dxl context so any 
-//				 declarations in dxl files in the specified path 
-//				 will not persist.
+//                 This is used for startup, finish, formal menu functions
+//                 and project menu functions.
+//  Notes:         eval_ runs the code in a separate dxl context so any 
+//                 declarations in dxl files in the specified path 
+//                 will not persist.
 //  Parameters: sFilesPath: path to the directory containing dxl files. This
-//				path must be relative to doorsHome
+//                path must be relative to doorsHome
 //-----------------------------------------------------------------------------
 void autorun(string sFilesPath)
 {
-	eval_(generateAutoRunDXLFolderString(sFilesPath))
+    eval_(generateAutoRunDXLFolderString(sFilesPath))
 }

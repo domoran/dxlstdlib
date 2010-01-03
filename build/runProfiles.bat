@@ -21,4 +21,4 @@ cd ..
 for /F "delims=;" %%i in ('cd') do set PRJDIR=%%i
 popd
 
-"%PRJDIR%\tools\runDOORS\runDOORS.exe" -b "%PRJDIR%\build\runProfiles.dxl" -u dxlstdlib -a "%PRJDIR%" -j "%PRJDIR%"
+"%PRJDIR%\tools\runDOORS\runDOORS.exe" -b "%PRJDIR%\build\runProfiles.dxl" -a "%PRJDIR%" -j "%PRJDIR%"
