@@ -1,0 +1,20 @@
+/*! \page developerhelp Developer Help 
+
+\section developer Developers, developers, developers ... 
+If you are interested in the DXL standard library, you are probably a DXL developer trying to make your life a bit easier. Maybe you 
+even wondered yourself, why there is no big bunch of free DXL code out there. 
+
+There is more than one way to make this library better: 
+- request the features you would like to see in this library!
+- recommend this library to other DXL developers!
+- help with the documentation!
+- you have some old code, which might prove useful to other users? Share it!
+
+And last but not least: 
+- Use this library! Even if you don't report bugs or give any feedback, your code will be seen by others which might 
+consider taking a look at this library.
+
+If you feel the need to get into DXL coding and providing to the open source community, feel free to contact me and get access to the
+sourceforge svn of the DXL standard library. 
+
+*/

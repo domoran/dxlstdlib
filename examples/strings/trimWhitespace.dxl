@@ -1,0 +1,8 @@
+#include <lib/strings.inc>
+
+string s = "\n\t\r  Test String\nWith three lines\nAnd lots of spaces! \n\r\t   "
+string result = trimWhitespace s 
+if (result != "Test String\nWith three lines\nAnd lots of spaces!") 
+    print "This should not happen! trimWhitespace failed!"
+    
+print "No whitespaces at beginning and end:" result "--------------------------"

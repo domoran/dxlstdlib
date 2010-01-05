@@ -8,4 +8,7 @@ functionality in Rational DOORS.
 The DXL Standard library is still in its pre-release stage. This means that the functionality is not complete yet. The first file 
 that will be released is the string functions file strings.inc for the first results. 
 
+Meanwhile you can check out the following pages: 
+- \subpage developerhelp
+
 */

@@ -1,1 +1,0 @@
-C:/Dokumente und Einstellungen/MMA/Desktop/dxlstandardlib/lib/strings.inc:28: Warning: Unsupported xml/html tag <space> found

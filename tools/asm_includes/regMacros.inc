@@ -22,9 +22,13 @@ REGKEY macro base:req, key:req
             @@k_e_y_Handle@@ dd ?
         .code
     ENDIF
-        
-    fn RegOpenKey, base, key, addr @@k_e_y_Handle@@
+
+    .if rv(RegOpenKey, base, key, addr @@k_e_y_Handle@@) != ERROR_SUCCESS
+       mov @@k_e_y_Handle@@,0
+    .endif
+    
     EXITM <@@k_e_y_Handle@@>
+
 ENDM
 
 SUBKEY macro base:req, key:req, index:req
@@ -60,7 +64,9 @@ REGVALUE macro key:req,val:req, size:req
     mov @@v_a_l_type@@, REG_SZ    
     mov @@s_t_r_size@@, size
     
-    fn RegQueryValueEx, key, val, NULL, addr @@v_a_l_type@@, addr keyVal, addr @@s_t_r_size@@
-    fn RegCloseKey, key    
+    .if rv(RegQueryValueEx, key, val, NULL, addr @@v_a_l_type@@, addr keyVal, addr @@s_t_r_size@@) != ERROR_SUCCESS
+        mov DWORD PTR [keyVal], 0
+    .endif
+    
     EXITM <offset keyVal>
 endm
