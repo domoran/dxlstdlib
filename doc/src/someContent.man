@@ -1,10 +1,40 @@
 /*! \page developerhelp Developer Help 
 
-\section developer Developers, developers, developers ... 
-If you are interested in the DXL standard library, you are probably a DXL developer trying to make your life a bit easier. Maybe you 
-even wondered yourself, why there is no big bunch of free DXL code out there. 
+\section developerhelp_contents Contents of the developer help
+On this page you will find information about: 
+- the \subpage developerhelp_page_goals "main goals" for the development of the library
+- the development environment:
+    - how to install it
+    - how the "one click" setup works (i.e. how it is possible that the setup works 'out of the box')
+    - and the tools (in the tools directory) that make this possible
+- how to code:
+    - coding guidelines for the DXL standard library
+- how to build something:
+    - how to build the documentation 
+    - how to run the tests
+    - how to run the profile scripts
+    - how to build the tools (using MASM32)
+- how to work with the SVN
+    - how to check something in
+- how to \subpage developerhelp_page_support "support" the DXL standard library
+    
+\page developerhelp_page_goals Main goals of the DXL standard library
+This project was founded simply because IBM(R) Rational(R) DOORS(R) (earlier known as Telelogic(R) DOORS(R)) can be a pain. 
+Everyone who spent some time trying to master the DXL language probably found out, that
+- The DXL language misses a LOT of features, even some very basic features all other languages have. 
+- The DXL language is not consistent in its structure.
+- The DXL language has not evolved significantly over the years.
+- There is not a lot of sharing DXL code in the DXL community, so everyone has to make the same errors. 
+- Developing in DXL is not comfortable since debugging features are missing and automatic testing of code is not easy.
+- Maintaining, documenting and reusing a huge DXL library can be very painful.
 
-There is more than one way to make this library better: 
+To solve those problems the DXL standard library has the following main development goals:
+- The DXL standard library will provide the user with commonly needed functionality for FREE. 
+- The DXL standard library will provide optimized and tested code
+- The DXL standard library will be easy to understand and use
+
+\page developerhelp_page_support Supporting the DXL standard library
+If you want to help improve the DXL standard library, there is more than one way: 
 - request the features you would like to see in this library!
 - recommend this library to other DXL developers!
 - help with the documentation!
@@ -16,5 +46,4 @@ consider taking a look at this library.
 
 If you feel the need to get into DXL coding and providing to the open source community, feel free to contact me and get access to the
 sourceforge svn of the DXL standard library. 
-
 */

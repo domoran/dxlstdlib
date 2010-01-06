@@ -38,5 +38,5 @@ string trimWhitespace(string s) {
    if ( first == last && isspace s[first] ) return ""
    return s[ first:last ]
 }
-/*! \example trimWhitespace.dxl 
-    This is an example on how to use the trimWhitespace function. */
+/*! \example example_trimWhitespace.dxl 
+    This is an example on how to use the trimWhitespace(string) function. */

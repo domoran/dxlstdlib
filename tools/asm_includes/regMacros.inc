@@ -66,7 +66,10 @@ REGVALUE macro key:req,val:req, size:req
     
     .if rv(RegQueryValueEx, key, val, NULL, addr @@v_a_l_type@@, addr keyVal, addr @@s_t_r_size@@) != ERROR_SUCCESS
         mov DWORD PTR [keyVal], 0
+        xor eax,eax
+    .else
+        mov eax, offset keyVal
     .endif
     
-    EXITM <offset keyVal>
+    EXITM <eax>
 endm

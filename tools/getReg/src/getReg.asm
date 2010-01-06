@@ -100,7 +100,7 @@ main proc
     .endif    
 
     cmp base, 0
-    jz errMain
+    jz errBase
 
     invoke  getcl_ex, 2, addr key    
     cmp eax, 1
@@ -125,6 +125,9 @@ main proc
 errMain:
     print addr usage   
     jmp endMain
+
+errBase: 
+    print "NO_SUCH_KEY",10,13
 
 errKey:
      print "NO_SUCH_KEY", 10,13
