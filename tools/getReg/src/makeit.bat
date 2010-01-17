@@ -19,10 +19,10 @@ REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/l
 if exist "getReg.obj" del "getReg.obj"
 if exist "getReg.exe" del "getReg.exe"
 
-s:\masm32\bin\ml /c /coff "getReg.asm"
+\masm32\bin\ml /c /coff "getReg.asm"
 if errorlevel 1 goto errasm
 
-s:\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "getReg.obj"
+\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "getReg.obj"
 if errorlevel 1 goto errlink
 dir "getReg.*"
 

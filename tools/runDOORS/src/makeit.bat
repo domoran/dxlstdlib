@@ -19,10 +19,10 @@ REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/l
 if exist "runDOORS.obj" del "runDOORS.obj"
 if exist "runDOORS.exe" del "runDOORS.exe"
 
-s:\masm32\bin\ml /c /coff "runDOORS.asm"
+\masm32\bin\ml /c /coff "runDOORS.asm"
 if errorlevel 1 goto errasm
 
-s:\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "runDOORS.obj"
+\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "runDOORS.obj"
 if errorlevel 1 goto errlink
 dir "runDOORS.*"
 copy runDOORS.exe ..

@@ -19,10 +19,10 @@ REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/l
 if exist "setupDOORS.obj" del "setupDOORS.obj"
 if exist "setupDOORS.exe" del "setupDOORS.exe"
 
-s:\masm32\bin\ml /c /coff "setupDOORS.asm"
+\masm32\bin\ml /c /coff "setupDOORS.asm"
 if errorlevel 1 goto errasm
 
-s:\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "setupDOORS.obj"
+\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "setupDOORS.obj"
 if errorlevel 1 goto errlink
 dir "setupDOORS.*"
 copy setupDOORS.exe ..
@@ -39,7 +39,5 @@ echo Assembly Error
 goto TheEnd
 
 :TheEnd
-
-
 
 pause
