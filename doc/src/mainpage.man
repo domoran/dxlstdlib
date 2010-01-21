@@ -1,5 +1,7 @@
 /*! \mainpage DXL Library Help
 
+\image html logo/logo_96.jpg
+
 \section Welcome
 Welcome to the DXL Standard Library help. This project aims at providing Rational(R) DOORS(R) users with the  
 functionality, they have always been missing. See \ref developerhelp_page_goals "the development goals" of the DXL standard library.
