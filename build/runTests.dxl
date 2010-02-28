@@ -18,15 +18,29 @@
 
 #include <lib/autorun.inc>
 
-string s = dxlHere() 
+string s = getenv ("DXLSTDLIBDIR")
+string profileDir = s "\\tests"
 
-int i = length s - 1
-int j = 0
+if (s == "") {
+    // if this file is included as an absolute path then determine the project dir 
+    // from the path of the file.
+    string s = dxlHere() 
 
-// find the second backslash from the end of s backwards
-while (true) if (s[i] == '\\' && j++ == 1) break else i--
+    int i = length s - 1
+    int j = 0
 
-string profileDir = s[1:i-1] "\\tests"
+    // find the second backslash from the end of s backwards
+    while (i > 0) if (s[i] == '\\' && j++ == 1) break else i--
+
+    if (i == 0) {
+        print "Error!\n\nYou need to run this script from a DXL standard library environment (with DXLSTDLIBDIR environment variable set)!\n"
+        print "Use the supplied runTests.bat file in the 'test' directory or start this file from a DOORS session started with 'runDOORS.bat'\n"
+        halt
+    }
+    
+    profileDir = s[1:i-1] "\\tests"
+}
+
 autorun profileDir
 
 

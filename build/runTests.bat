@@ -18,8 +18,8 @@ REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/l
 
 pushd
 cd ..
-for /F "delims=;" %%i in ('cd') do set PRJDIR=%%i
+for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
 popd
 
-"%PRJDIR%\tools\runDOORS\runDOORS.exe" -b "%PRJDIR%\build\runTests.dxl" -a "%PRJDIR%" -j "%PRJDIR%"
-pause
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
+REM pause

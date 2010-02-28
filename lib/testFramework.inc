@@ -16,17 +16,18 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <lib/dxlstdlib.inc>
 
 int gErrorCount = 0
 
-void reportTestError (string fn, int nr, string is, string should) {
-    print "Error in test nr. " nr " for function '" fn "'.\nResult: |" is "|\nShould be: |" should "|\n"    
+void reportTestError_ (string fn, string is, string should, int offset) {    
+    print "Error in " (getCaller (3+offset) ) " for function '" fn "'.\nResult: |" is "|\nShould be: |" should "|\n"    
     gErrorCount++
 }
 
-void test (string fn, int nr, string is, string should) {
-    if (is != should) reportTestError(fn, nr, is, should) 
-}
+void test (string fn, string is, string should, int callerOffset) { if (is != should) reportTestError_(fn, is, should, callerOffset) }
+
+void test (string fn, string is, string should) { test (fn, is, should, 1) }
 
 void reportErrors() {
     if (gErrorCount == 0) print "OK\n"

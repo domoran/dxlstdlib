@@ -27,7 +27,7 @@
 string generateAutoRunDXLFolderString(string sFilesPath)
 {
     string sEvalStr = ""
-    string sIncStart = "#include <" sFilesPath "\\"
+    string sIncStart = "{#include <" sFilesPath "\\"
     string s
     string sLoc
     string sDXLCheck = null
@@ -47,10 +47,10 @@ string generateAutoRunDXLFolderString(string sFilesPath)
                     //do nothing
             } else {
                 sDXLCheck = null
-                sDXLCheck = checkDXL(sIncStart s ">")
+                sDXLCheck = checkDXL(sIncStart s ">}")
                 if(null sDXLCheck)
                 {
-                    sEvalStr = sEvalStr sIncStart s ">\n"
+                    sEvalStr = sEvalStr sIncStart s ">}\n"
                 }
                 else
                 {
@@ -60,7 +60,6 @@ string generateAutoRunDXLFolderString(string sFilesPath)
             }
         }
     } else print "No files in or unknown directory " sLoc "\n"
-    
     
     return(sEvalStr)
 }

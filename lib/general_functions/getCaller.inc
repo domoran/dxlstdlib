@@ -16,21 +16,19 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <lib/testFramework.inc>
-#include <lib/strings.inc>
-
-print "Testing String Functions ... "
-
-// -------------------------- Tests for trimWhitespace  -------------------------
-{
-    string fn = "trimWhitespace"
-    
-    test(fn, trimWhitespace "123", "123")
-    test(fn, trimWhitespace "", "")
-    test(fn, trimWhitespace " ", "")
-    test(fn, trimWhitespace "\n \t", "")
-    test(fn, trimWhitespace "\n test \t", "test")
-    test(fn, trimWhitespace "\r\n test it\t \r\n", "test it")    
+string getCaller (int nr) {
+    string s = dxlHere(); 
+    int len = length s    
+    int posStart = 0; int posEnd = 0; int count = 0; 
+    // find the nr-th newline character in s
+    while (posEnd < len && (s[posEnd] != '\n' || ++count < nr)) posEnd++;
+    // store the start point
+    posStart = posEnd; posEnd++
+    // find the next newline, store the endPoint
+    while (posEnd < len && s[posEnd] != '\n') posEnd ++
+    // Skip the newline at the end of the line
+    if (posStart < len-2) posStart++
+    // Skip the newline at the start of the line
+    if (posEnd   > 0    ) posEnd--
+    return s[posStart:posEnd]    
 }
-
-reportErrors()

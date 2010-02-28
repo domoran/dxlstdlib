@@ -1,6 +1,6 @@
 /*! \mainpage DXL Library Help
 
-\image html logo/logo_96.jpg
+\image html logo/logo_96.png
 
 \section Welcome
 Welcome to the DXL Standard Library help. This project aims at providing Rational(R) DOORS(R) users with the  

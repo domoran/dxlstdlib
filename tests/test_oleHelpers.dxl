@@ -17,20 +17,25 @@
 */
 
 #include <lib/testFramework.inc>
-#include <lib/strings.inc>
+#include <lib/general_functions/oleHelpers.inc>
 
-print "Testing String Functions ... "
+print "Testing OLE Functions ... "
 
 // -------------------------- Tests for trimWhitespace  -------------------------
 {
-    string fn = "trimWhitespace"
+    string fn = "oleHelpers"
+        
+    OleAutoObj x = oleCreateAutoObject("Word.Application")
+    olePut (x, "Visible", true) 
+    int i
+    test(fn, oleMethod (x, "PixelsToPoints", oleArgs <- 320 <- false, i), "")
+    test(fn, i "", "240")
     
-    test(fn, trimWhitespace "123", "123")
-    test(fn, trimWhitespace "", "")
-    test(fn, trimWhitespace " ", "")
-    test(fn, trimWhitespace "\n \t", "")
-    test(fn, trimWhitespace "\n test \t", "test")
-    test(fn, trimWhitespace "\r\n test it\t \r\n", "test it")    
+    i = 0
+    test(fn, oleMethod (x, "PixelsToPoints", oleArgs <- 640 <- false, i), "")
+    test(fn, i "", "480")
+    
+    oleMethod (x, "Quit")
 }
 
 reportErrors()
