@@ -22,9 +22,30 @@
 This library provides a wrapper for the MSXML DOM Document COM interface. For this it supplies three new datatypes:
 - XMLDocument   => Class for an XML document. The class provides functions for manipulating XML tags or xslt transformations.
 - XMLTag        => Class for the content of one xml tag. Provides functions for reading the content, reading the tag hierarchy.
-- XMLNodelist   => Class for a list of nodes that is returned by the +selectNodes+ function or the +childNodes+ function.
+- XMLNodelist   => Class for a list of nodes that is returned by the \em selectNodes function or the \em childNodes function.
 
 \class XMLDocument
+
+The XMLDocument object contains of a hierarchy of XMLTags. You can create an XMLDocument object by using the create_XMLDocument() 
+function and delete it again by calling delete_XMLDOcument(XMLDocument &). The following general example shows how easy it is to 
+generate an XML document using this library: 
+
+\include general_xml_example.dxl
+
+This example will produce the following XML: 
+\verbatim
+<Phonebook>
+    <Person Gender="male">
+        <Name>Mr. Schmidt</Name>
+        <Phone>012-3456</Phone>
+    </Person>    
+    <Person Gender="female">
+        <Name>Mrs. Meyer</Name>
+        <Phone>056-7890</Phone>
+    </Person>
+</Phonebook>
+\endverbatim
+
 \class XMLTag
 \class XMLNodelist
 */
@@ -377,7 +398,7 @@ string transformDocument (XMLDocument xdTransform, XMLDocument xdStylesheet) {
     return result
 }
 
-//! \brief XMLNodelist can be seen as a list of XMLTags with no hierarchy
+//! \brief XMLNodelist is a class that represents a list of XMLTags with no hierarchy
 struct XMLNodelist {};
 
 DxlObject DxlObjectOf (XMLNodelist nl) { return (addr_ nl) DxlObject }

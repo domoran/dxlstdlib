@@ -2,8 +2,9 @@
 
 \section developerhelp_contents Contents of the developer help
 On this page you will find information about: 
+- \subpage developerhelp_page_setup "Installing and Running" the DXL standard library 
 - the \subpage developerhelp_page_goals "main goals" for the development of the library
-- the development environment:
+- the \subpage developerhelp_page_environment "development environment":
     - how to install it
     - how the "one click" setup works (i.e. how it is possible that the setup works 'out of the box')
     - and the tools (in the tools directory) that make this possible
@@ -18,6 +19,45 @@ On this page you will find information about:
     - how to check something in
 - how to \subpage developerhelp_page_support "support" the DXL standard library
     
+\page developerhelp_page_setup Installing and Running the DXL standard library
+
+The DXL standard library has a 'one click' setup routine. After you checked out the DXL standard library from sourceforge
+there should be a directory structure like this (not all files included): 
+\verbatim
++--- build
+|       makeDocumentation.bat
+|       runDOORS.bat
+|       runProfiles.bat
+|       runTests.bat
++--- doc
++--- examples
++--- lib
++--- profiles
++--- tests
++--- tools
+LICENSE.TXT
+README.TXT
+setup.bat
+\endverbatim
+
+\section developerhelp_section_setupstepone Step one - Setup
+Run the setup.bat file. It will ask you for your database setup, your username and your password. This information will be stored in your user profile
+directory, so the data will be safe from other users. If you had already installed the DXL standard library then the tool might tell you that the setup 
+file already exists and ask you if you want to delete it. If you want to reconfigure your database, just run setup.bat, choose to delete the old 
+file and run it again to setup new data. 
+
+\section developerhelp_section_setupsteptwo Step two - Enjoy
+
+In the build directory you will find three batch scripts, which shall run out of the box:  
+
+- \b \em runDOORS.bat - will start an interactive DOORS client with the DXL standard library in the include path. You can use this start link, if you are
+  developing using a customized editor, which will run scripts over the DOORS COM interface. 
+- \b \em makeDocumentation.bat - will recreate the HTML documentation and if Microsoft HTML Workshop is installed build the CHM help file from it. 
+- \b \em runTests.bat - will run the test suite for the whole library
+- \b \em runProfiles.bat - will run the profiling suite for the whole library
+
+\b Enjoy! you can now start developing using the DXL standard library!
+    
 \page developerhelp_page_goals Main goals of the DXL standard library
 This project was founded simply because IBM(R) Rational(R) DOORS(R) (earlier known as Telelogic(R) DOORS(R)) can be a pain. 
 Everyone who spent some time trying to master the DXL language probably found out, that
@@ -31,7 +71,64 @@ Everyone who spent some time trying to master the DXL language probably found ou
 To solve those problems the DXL standard library has the following main development goals:
 - The DXL standard library will provide the user with commonly needed functionality for FREE. 
 - The DXL standard library will provide optimized and tested code
+- The DXL standard library will be completly documented
 - The DXL standard library will be easy to understand and use
+
+\page developerhelp_page_environment The development environment
+The development environment of the DXL standard library has two main goals: 
+- \b automatic \b build \b tools: 
+    - test suite: each library shall have a test module. Tests shall be run automatically.
+    - profiling suite: to measure speed improvements between the versions, each library shall have a profiling module, that 
+      will measure the speed of time critical functions.
+    - document generation: the documentation shall be generated automatically from the source code. 
+- <B>ready to run build tools</B>: people shall be able to start developing without configuring the build tools AND without having 
+     to configure their DOORS database (e.g. add a user)
+
+To achieve these two goals the DXL standard library uses its own tools. One problem that needs to be handled is, that 
+the installation path of the DXL standard library can be different for each user. However, the user shall not have to make 
+any changes to the build scripts to avoid accidental checkins to SVN, so the build scripts must run independent from the 
+installation path. The next problem is that people use different DOORS versions and have their DOORS installed in different paths. 
+It has to be avoided that people need to make changes to their system (like setting permanent environment variables). This includes 
+making changes to their DOORS database (like adding a user for running the test scripts). To run the build scripts like the test suite 
+the username and password obviously must be configured somewhere.
+
+\section developerhelp_section_startlinks Running DOORS - the "one for all" start scripts
+
+Most DXL developers have experience in setting up the include paths for the DOORS client to be able to use a script or library. To 
+start DOORS the automatic test suite with the DXL standard library enabled manually users would to create a DOORS link which contains 
+a) the path to their DOORS client, b) the path to the DXL standard library, c) their database path and d) their user name and password 
+for DOORS. The link would look like:  
+\verbatim
+[DOORSPATH]\\bin\\doors.exe -b [LIBPATH]\\build\\runTests.dxl -d [DATABASE] -a [LIBPATH] -u [USER] -p [PASSWORD]. 
+\endverbatim
+To make this link work for all users means to determine all five parameters: the library path, the user name, the password and the DOORS 
+client path. The \em build/runTests.bat file will serve as an example of how this is done: 
+
+\code
+pushd
+cd ..
+for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
+popd
+
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
+REM pause
+\endcode
+
+The first four commands set the environment variable DXLSTDLIBDIR to the installation path of the DXL standard library. This is 
+how the [LIBPATH] parameter is determined. Afterwards the \b runDOORS tool is started which will a DOORS batch job from the runTests.dxl
+file. 
+
+The runDOORS tool will do the following: 
+- locate the installation path of the DOORS client in the windows registry
+- read the supplied database, username and password from the configuration file in the user profile directory 
+- start the DOORS client with the parameters supplied over the commandline and the username/password that was supplied. 
+
+The database, username and password can obviously not be determined automatically. To avoid having the developers enter their username and password
+everytime they want to run tests and to relieve them from changing the build scripts to include their custom database path, those parameters are 
+stored in the \em %USERPROFILE% directory in the file %doorsLogin.dat%. To allow the users to quickly setup this data, there is a custom tool called 
+\em setupDOORS.exe, which will read the information from the commandline and store it to the file. 
+
+Using the custom runDOORS.exe, which will tool makes it possible 
 
 \page developerhelp_page_support Supporting the DXL standard library
 If you want to help improve the DXL standard library, there is more than one way: 

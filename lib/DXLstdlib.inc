@@ -1,11 +1,11 @@
 #include <lib/general_functions/getCaller.inc>
 
 //! \brief RuntimeError is an internal class for generating runtime errors in the DXL standard library. 
-struct RuntimeError {}
+struct RuntimeError {};
 
 DxlObject DxlObjectOf (RuntimeError err) { return (addr_ err) DxlObject }
 
-Skip gsk_stdlib_globals_ = createString()  
+Skip gsk_stdlib_globals_ = createString();
 
 RuntimeError raiseError (string code, string msg) {     
     string s = getCaller 2

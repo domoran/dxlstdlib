@@ -1,29 +1,34 @@
-/*! \mainpage DXL Library Help
+/*! \mainpage DXL Standard Library Help
 
 \image html logo/logo_96.png
 
-\section Welcome
-Welcome to the DXL Standard Library help. This project aims at providing Rational(R) DOORS(R) users with the  
-functionality, they have always been missing. See \ref developerhelp_page_goals "the development goals" of the DXL standard library.
+\section mainpage_welcome Welcome Developers, Welcome Users!
+Welcome to the DXL Standard Library help. This project aims at providing Rational(R) DOORS(R) developers with the  
+functionality, they have always been missing. The DXL Standard library is still in its pre-release stage. This means 
+that the functionality is not complete yet. You can help to make this project a success. So check out the 
+\subpage developerhelp "Developer Help". 
+
+You may also directly jump to the \ref developerhelp_page_setup "Setup and installation instructions".
 
 \section Features
-While the DXL part of the DXL standard library is still before its first official release, you should take a look at the development
+While the DXL part of the DXL standard library is still before its first official release, you should take a look at the smart development
 environment. It has the following features: 
 - You don't need to configure where you installed your DOORS client (<B>automatically determined!</B>)
 - You don't need to configure where you installed the library (<B>automatically determined!</B>)
-- the \b doorsSetup tool will enable you to store your login data, so 
+- the \b doorsSetup tool will enable you to store your DOORS database setup, so 
     - <B>running DOORS</B> with the standard library loaded is just "one click"
     - running the <B> test suite </B> is just "one click"
     - running the <B> profiling tests </B> (time measurements) is just "one click"
-- You can <B> generate this documentation </B> with "one click", no setup required <BR>
+- You can <B> generate this documentation </B> with "one click", a modified version of DOXYGEN ships with the library <BR>
  (for CHM file you need to install Microsoft HTML Workshop)
 
-While the development environment is really nice, even the first file strings.inc gives you a hint about the future features of the DXL standard library:
+\section Library Contents
+While the development environment is really nice, you can also take a look at the first library file: 
+XMLDocument.inc - will give you the ability to read and write XML documents from DXL
+
+The strings.inc example library gives you a hint about the future features of the DXL standard library and its documentation:
 - The function descriptions will contain <B> \link example_trimWhitespace.dxl examples \endlink </B>
-- Time critical functions will contain <B> \ref profiler.inc "profiling" </B> code, which enable you to measure the execution time of a function and enables you to implement optimizations or predict the runtime behaviour. 
 - The function are well <B>\link trimWhitespace(string) documented \endlink</B>.
-
-\section Developers
-The DXL Standard library is still in its pre-release stage. This means that the functionality is not complete yet. You can help to make this project a success. So check out the \subpage developerhelp.
-
+- Time critical functions will contain <B> \ref profiler.inc "profiling" </B> code, which enable you to measure the execution 
+  time of a function and enables you to implement optimizations or predict the runtime behaviour. 
 */

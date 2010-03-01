@@ -1,0 +1,26 @@
+#include <lib/DXLstdlib.inc>
+#include <lib/XMLDocument.inc>
+
+// appends a person with name and telephone number to the xtPerson tag
+void appendPerson (XMLTag xtPerson, string sGender, string sName, string sTelephone) {
+    XMLTag xt  = appendTag(xtPerson, "Person") 
+    setAttribute (xt, "Gender", sGender)
+    setText (appendTag (xt, "Name"), sName) 
+    setText (appendTag (xt, "Phone"), sTelephone) 
+}
+
+// create the XMLDocument
+XMLDocument x = create_XMLDocument() 
+
+// create a node for our phonebook 
+XMLTag xtp = appendTag (x, "Phonebook")
+
+// insert some data
+appendPerson ( xtp, "male", "Mr. Schmidt", "012-3456" ) 
+appendPerson ( xtp, "female", "Mrs. Meyer", "056-7890" ) 
+
+// print the generated XML
+print getXML x
+
+// make sure that the DXLDocument is always cleaned up after usage
+delete_XMLDocument x
