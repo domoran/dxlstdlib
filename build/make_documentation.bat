@@ -31,6 +31,8 @@ if "%HCCDIR%"=="NO_SUCH_VALUE" goto installError
 "%HCCDIR%\hhc.exe" ..\doc\html\index.hhp
 if NOT "%ERRORLEVEL%"=="1" goto CHMERROR
 
+if NOT "<%%1>" == "<release>" goto AllOK
+
 start ../doc/DXLLIB.chm
 
 goto AllOK
