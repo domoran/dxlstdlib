@@ -1,6 +1,7 @@
 .svn
 html
 releases
+exclude
 dxl_doxygen
 build\make_
 tools\zip

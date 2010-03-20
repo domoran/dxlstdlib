@@ -21,8 +21,8 @@ cd ..
 for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
 popd
 
-del /Q %DXLSTDLIBDIR%\releases\*.*
-del /Q %DXLSTDLIBDIR%\build\docWarnings.txt
-del /Q %DXLSTDLIBDIR%\doc\html\*.*
-del /Q %DXLSTDLIBDIR%\doc\html\search\*.*
-rmdir %DXLSTDLIBDIR%\doc\html\search
+del /Q "%DXLSTDLIBDIR%\releases\*.*"
+del /Q "%DXLSTDLIBDIR%\build\docWarnings.txt"
+del /Q "%DXLSTDLIBDIR%\doc\html\*.*"
+del /Q "%DXLSTDLIBDIR%\doc\html\search\*.*"
+rmdir "%DXLSTDLIBDIR%\doc\html\search"

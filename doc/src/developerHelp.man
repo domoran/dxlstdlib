@@ -104,7 +104,9 @@ for DOORS. The link would look like:
 To make this link work for all users means to determine all five parameters: the library path, the user name, the password and the DOORS 
 client path. The \em build/runTests.bat file will serve as an example of how this is done: 
 
-\code
+\image html developerhelp/test.svg
+
+\verbatim
 pushd
 cd ..
 for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
@@ -112,23 +114,23 @@ popd
 
 "%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
 REM pause
-\endcode
+\endverbatim
 
 The first four commands set the environment variable DXLSTDLIBDIR to the installation path of the DXL standard library. This is 
 how the [LIBPATH] parameter is determined. Afterwards the \b runDOORS tool is started which will a DOORS batch job from the runTests.dxl
 file. 
 
-The runDOORS tool will do the following: 
+The \em runDOORS.exe tool will do the following: 
 - locate the installation path of the DOORS client in the windows registry
 - read the supplied database, username and password from the configuration file in the user profile directory 
 - start the DOORS client with the parameters supplied over the commandline and the username/password that was supplied. 
 
 The database, username and password can obviously not be determined automatically. To avoid having the developers enter their username and password
 everytime they want to run tests and to relieve them from changing the build scripts to include their custom database path, those parameters are 
-stored in the \em %USERPROFILE% directory in the file %doorsLogin.dat%. To allow the users to quickly setup this data, there is a custom tool called 
+stored in the \em \%USERPROFILE\% directory in the file doorsLogin.dat. To allow the users to quickly setup this data, there is a custom tool called 
 \em setupDOORS.exe, which will read the information from the commandline and store it to the file. 
 
-Using the custom runDOORS.exe, which will tool makes it possible 
+Using the custom \em runDOORS.exe, which will tool makes it possible 
 
 \page developerhelp_page_support Supporting the DXL standard library
 If you want to help improve the DXL standard library, there is more than one way: 

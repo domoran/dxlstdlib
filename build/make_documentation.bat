@@ -16,49 +16,80 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
+REM --------- create documentation using the modified doxygen ---------------------------
 ..\tools\dxl_doxygen\DXL_doxygen.exe ..\doc\config\Doxyfile
 if NOT "%ERRORLEVEL%" == "0" goto ErrorGen
 
+REM --------- Check for HTML Workshop installation ---------------------------
 FOR /F "delims=;" %%i in ('..\tools\getReg\getReg.exe HKCU "Software\Microsoft\HTML Help Workshop" InstallDir') DO SET HCCDIR=%%i
-if "%HCCDIR%"=="NO_SUCH_KEY" goto notInstalled
+if "%HCCDIR%"=="NO_SUCH_KEY" goto HCCnotInstalled
 
-ECHO -----------------------------
-ECHO Generating compiled Help file
-ECHO -----------------------------
+echo.
+echo -----------------------------
+echo Generating compiled Help file
+echo -----------------------------
 
-if "%HCCDIR%"=="NO_SUCH_VALUE" goto installError
+REM --------- Check if we have found a directory for HCC (future versions might change the key) ---------------------------
+if "%HCCDIR%"=="NO_SUCH_VALUE" goto HCCinstallError
 
+
+REM --------- generate the CHM help file ---------------------------
 "%HCCDIR%\hhc.exe" ..\doc\html\index.hhp
 if NOT "%ERRORLEVEL%"=="1" goto CHMERROR
 
-if NOT "<%%1>" == "<release>" goto AllOK
 
+REM --------- if we are not doing a release then end the script here ---------------------------
+REM --------- otherwise show the CHM file and end then               ---------------------------
+if "<%1>" == "<release>" goto AllOK
 start ../doc/DXLLIB.chm
-
 goto AllOK
 
-:notInstalled
+
+REM --------- Help workshop is not installed. If we are making a release this is not acceptable ---------------------------
+REM --------- otherwise it is okay, we start the generated HTML help                            ---------------------------
+:HCCnotInstalled
+if "<%1>" == "<release>" goto releaseErr
 start ../doc/HTML/index.html
 goto AllOK
 
-:installError
-ECHO CHM File could not be created!
-ECHO ------------------------------
-ECHO HTML Workshop seems to be installed, but the installation path 
-ECHO could not be determined. Maybe your HTML Workshop version is to 
-ECHO new. Please report a bug with the HTML workshop version. 
-ECHO -
+
+REM --------- Help workshop is installed, but we did not find the directory. If we make a realese -------------------------
+REM --------- we need to exit the release script here. Otherwise start the HTML help              -------------------------
+:HCCinstallError
+echo.
+echo CHM File could not be created!
+echo ------------------------------
+echo HTML Workshop seems to be installed, but the installation path 
+echo could not be determined. Maybe your HTML Workshop version is too
+echo new. Please report a bug with the HTML workshop version. 
+echo.
+
+if "<%1>" == "<release>" goto releaseErr
+
 pause
-
 start ../doc/HTML/index.html
 goto AllOK
 
+REM --------- There was an error during CHM compilation. For a release this is not acceptable.   -------------------------
+REM --------- Otherwise we will tell the user and start the HTML help.                           -------------------------
 :CHMERROR
-ECHO -
-ECHO The CHM help file for the dxl standard library could not be compiled. 
+echo.
+echo The CHM help file for the dxl standard library could not be compiled. 
+echo.
+
+if "<%1>" == "<release>" goto releaseErr
+
 pause
 start ../doc/HTML/index.html
 goto AllOK
+
+:releaseErr
+echo.
+echo To make a release you MUST have Microsoft HTML Workshop installed!
+echo Install it and try again
+echo.
+pause
+EXIT  
 
 :ErrorGen
 pause

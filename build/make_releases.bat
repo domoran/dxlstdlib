@@ -1,4 +1,4 @@
-@echo off
+REM @echo off
 
 REM    Copyright 2010 by Mathias Mamsch
 REM    This file is part of the DOORS Standard Library 
@@ -21,26 +21,23 @@ cd ..
 for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
 popd
 
-cd %DXLSTDLIBDIR%\build && call make_documentation.bat release
+cd "%DXLSTDLIBDIR%\build" && call make_documentation.bat release
 call make_clean.bat
 
-cd %DXLSTDLIBDIR%
+cd "%DXLSTDLIBDIR%"
 
 rd releases /S /Q
 mkdir releases
 
-XCOPY  /I /Y *.* releases\user /EXCLUDE:build\make_user_exclude.txt
-for /F %%i in ('dir /B /A:D') do XCOPY /E /I /Y %%i releases\user\%%i /EXCLUDE:build\make_user_exclude.txt
+XCOPY  /I /Y *.* releases\user /EXCLUDE:build\exclude\make_user_exclude.txt
+for /F %%i in ('dir /B /A:D') do XCOPY /E /I /Y %%i releases\user\%%i /EXCLUDE:build\exclude\make_user_exclude.txt
 rmdir releases\user\.svn
 
-XCOPY  /I /Y *.* releases\developer /EXCLUDE:build\make_developer_exclude.txt
-for /F %%i in ('dir /B /A:D') do XCOPY /E /I /Y %%i releases\developer\%%i /EXCLUDE:build\make_developer_exclude.txt
+XCOPY  /I /Y *.* releases\developer /EXCLUDE:build\exclude\make_developer_exclude.txt
+for /F %%i in ('dir /B /A:D') do XCOPY /E /I /Y %%i releases\developer\%%i /EXCLUDE:build\exclude\make_developer_exclude.txt
 rmdir releases\developer\.svn
 
-:copyOK
 for /F %%i in ('date /T') do set dt=%%i
  
-cd %DXLSTDLIBDIR%\releases\developer && %DXLSTDLIBDIR%\tools\zip\zip.exe -r %DXLSTDLIBDIR%\releases\developer_%dt:.=_%.zip .
-cd %DXLSTDLIBDIR%\releases\user && %DXLSTDLIBDIR%\tools\zip\zip.exe -r %DXLSTDLIBDIR%\releases\user_%dt:.=_%.zip .
-
-pause
+cd "%DXLSTDLIBDIR%\releases\developer" && "%DXLSTDLIBDIR%\tools\zip\zip.exe" -r "%DXLSTDLIBDIR%\releases\developer_%dt:.=_%.zip" .
+cd "%DXLSTDLIBDIR%\releases\user" && "%DXLSTDLIBDIR%\tools\zip\zip.exe" -r "%DXLSTDLIBDIR%\releases\user_%dt:.=_%.zip" .

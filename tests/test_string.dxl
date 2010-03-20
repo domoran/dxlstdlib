@@ -27,6 +27,7 @@ print "Testing String Functions ... "
     
     test(fn, trimWhitespace "123", "123")
     test(fn, trimWhitespace "", "")
+    test(fn, trimWhitespace "a", "a")
     test(fn, trimWhitespace " ", "")
     test(fn, trimWhitespace "\n \t", "")
     test(fn, trimWhitespace "\n test \t", "test")

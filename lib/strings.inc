@@ -38,5 +38,16 @@ string trimWhitespace(string s) {
    if ( first == last && isspace s[first] ) return ""
    return s[ first:last ]
 }
+
 /*! \example example_trimWhitespace.dxl 
     This is an example on how to use the trimWhitespace(string) function. */
+
+/*! \return the contents of s where leading whitespaces (space,\\n,\\t,\\r) are removed from the beginning and the end
+    \param s the string where leading and trailing whitespaces shall be removed
+    \brief efficient removal of whitespaces at beginning and end
+    This function is designed so that no unnecessary intermediate strings are created. That is why it runs on 'char' level.
+*/  
+    
+string replace (string sSource, string sSearch, string sReplace) {
+
+}
