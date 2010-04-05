@@ -8,7 +8,7 @@ functionality, they have always been missing. The DXL Standard library is still 
 that the functionality is not complete yet. You can help to make this project a success. So check out the 
 \subpage developerhelp "Developer Help". 
 
-You may also directly jump to the \ref developerhelp_page_setup "Setup and installation instructions".
+You may also directly jump to the \ref developerhelp_page_install "Setup and installation instructions".
 
 \section Features
 While the DXL part of the DXL standard library is still before its first official release, you should take a look at the smart development

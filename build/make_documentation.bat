@@ -16,6 +16,10 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
+REM --------- Extract pictures from the visio files ---------------------------
+
+REM cscript /nologo ..\doc\pictures\make_pictures.vbs
+
 REM --------- create documentation using the modified doxygen ---------------------------
 ..\tools\dxl_doxygen\DXL_doxygen.exe ..\doc\config\Doxyfile
 if NOT "%ERRORLEVEL%" == "0" goto ErrorGen
