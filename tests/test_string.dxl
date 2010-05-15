@@ -34,4 +34,27 @@ print "Testing String Functions ... "
     test(fn, trimWhitespace "\r\n test it\t \r\n", "test it")    
 }
 
+// -------------------------- Tests for replace  -------------------------
+{
+    string fn = "replace"    
+    test(fn, replace("I wanna be in america ... I wanna be in america ... ", "america", "germany"), 
+                     "I wanna be in germany ... I wanna be in germany ... ")
+                     
+    test(fn, replace("test", "t", "f"), "fesf")
+    test(fn, replace("test", "te", "fe"), "fest")
+    test(fn, replace("\ntest\n", "\n", ""), "test")
+    test(fn, replace("nn", "n", ""), "")
+    test(fn, replace("", "mule", "muli"), "")
+    test(fn, replace("whassup?", "ss", "ts "), "whats up?")    
+    RuntimeError x; 
+    try() 
+        replace("whassup?", "", "")
+    if (catch(x), (errorCode x) == "Parameter error") {
+        test (fn, errorMessage() , "in strings.inc/replace: search string must not be empty")
+    } else {
+        test (fn, "no error", "a parameter error shall have been raised with an empty searchString"); 
+    }
+
+}
+
 reportErrors()

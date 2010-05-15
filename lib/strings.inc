@@ -42,12 +42,43 @@ string trimWhitespace(string s) {
 /*! \example example_trimWhitespace.dxl 
     This is an example on how to use the trimWhitespace(string) function. */
 
-/*! \return the contents of s where leading whitespaces (space,\\n,\\t,\\r) are removed from the beginning and the end
-    \param s the string where leading and trailing whitespaces shall be removed
-    \brief efficient removal of whitespaces at beginning and end
-    This function is designed so that no unnecessary intermediate strings are created. That is why it runs on 'char' level.
+/*! \return Returns sSource, where the searchstring \em sSearch is replaced by sReplace 
+    \param sSource the source string in which \em sSearch shall be replaced
+    \param sSearch the search string that shall be replaced
+    \param sReplace the string by which \em sSearch shall be replaced
+    \brief Replaces a part of the string by another string
 */  
-    
 string replace (string sSource, string sSearch, string sReplace) {
-
+    int iLen = length sSource
+    if (iLen == 0) return ""
+    
+    int iLenSearch = length(sSearch)
+    
+    if (iLenSearch == 0) { 
+        raiseError ("Parameter error", "in strings.inc/replace: search string must not be empty")
+        return "" 
+    }
+    
+    // read the first char for latter comparison -> speed optimization
+    char firstChar = sSearch[0]
+    
+    Buffer s = create() 
+    int pos = 0, d1,d2;    
+    int i
+    
+    while (pos < iLen) { 
+        char ch = sSource[pos]; 
+        bool found = true
+        
+        if (ch != firstChar) {pos ++; s+= ch; continue}
+        for (i = 1; i < iLenSearch; i++) 
+           if (sSource[pos+i] != sSearch[i]) { found = false; break }
+        if (!found) {pos++; s+= ch; continue}
+        s += sReplace
+        pos += iLenSearch
+    }
+    
+    string result = stringOf s
+    delete s
+    return result
 }

@@ -1,0 +1,47 @@
+/*
+    Copyright 2010 by Mathias Mamsch
+    This file is part of the DOORS Standard Library 
+
+    The DOORS Standard Library  is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The DOORS Standard Library  is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <lib/testFramework.inc>
+
+print "Testing Error Handling "
+
+// -------------------------- Tests for trimWhitespace  -------------------------
+{
+    string fn = "try/catch"
+    try() 
+    
+    test (fn, catch() "", "false") 
+    test (fn, errorCode()    , "") 
+    test (fn, errorMessage() , "") 
+    test (fn, errorPosition(), "") 
+
+    try() 
+        raiseError ("Bad Error", "Bad Error Message") 
+    test (fn, catch() "", "true") 
+    test (fn, errorCode()    , "Bad Error") 
+    test (fn, errorMessage() , "Bad Error Message") 
+    string spos = errorPosition()
+    test (fn, spos[length(spos)-27:length(spos)-3], "test_errorHandling.dxl:34") 
+
+    test (fn, catch() "", "false") 
+    test (fn, errorCode()    , "") 
+    test (fn, errorMessage() , "") 
+    test (fn, errorPosition(), "")     
+}
+
+reportErrors()
