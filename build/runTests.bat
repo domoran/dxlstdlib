@@ -21,5 +21,5 @@ cd ..
 for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
 popd
 
-"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -f "%TEMP%" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
 REM pause

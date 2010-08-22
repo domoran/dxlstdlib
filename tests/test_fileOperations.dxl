@@ -1,0 +1,94 @@
+/*
+    Copyright 2010 by Mathias Mamsch
+    This file is part of the DOORS Standard Library 
+
+    The DOORS Standard Library  is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The DOORS Standard Library  is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <lib/testFramework.inc>
+#include <lib/fileOperations.inc>
+
+print "Testing File Operation Functions ... "
+
+// -------------------------- Tests for trimWhitespace  -------------------------
+{
+	string sFileName = tempFileName()
+    Stream strmOut = write binary  sFileName
+ 
+ 	int arTestBytes[] = {0x0F0D0A12,0x00000000, 0x01020304, 0x05060708, 0x0708090A, 
+ 		       0x0B0C0D0E,0x0F101112, 0x13141516, 0x1718191A, 0x1B1C1D1F } 
+ 
+ 	int i 
+ 	
+ 	for i in 0:(sizeof arTestBytes)-1 do {
+ 		writeInt(strmOut, arTestBytes[i]) 
+ 		strmOut << arTestBytes[i] "\n"
+ 		
+ 	}
+ 	
+ 	close strmOut
+ 	
+ 	Stream strmIn = read binary sFileName
+ 	
+	int iReadNr = 0
+	string sReadStr
+	
+	for i in 0:(sizeof arTestBytes)-1 do {
+		readInt(strmIn,iReadNr)
+		strmIn >> sReadStr 
+		test ("Integer Binary Read Write Test " i "", iReadNr "", arTestBytes[i] "") 
+		test ("Integer Binary Read Write Test " i "", sReadStr, arTestBytes[i] "") 
+	} 	
+	
+	close strmIn
+    
+    deleteFile sFileName
+}
+
+
+// -------------------------- Tests for trimWhitespace  -------------------------
+{
+	string sFileName = tempFileName()
+    Stream strmOut = write binary  sFileName
+ 
+ 	string arTestStrings[] = {"Hallo\nDu", "Hallo\n\rDu\n\rPferd", "Some\001\002\003\004Chars!", 
+ 		        "", "\001"} 
+ 
+ 	int i 
+ 	
+ 	for i in 0:(sizeof arTestStrings)-1 do {
+ 		Buffer b = create(); 
+ 		b += arTestStrings[i] 
+ 		writeText(strmOut, b) 
+ 	}
+ 	
+ 	close strmOut
+ 	
+ 	Stream strmIn = read binary sFileName
+ 	
+	string sReadStr
+	
+	for i in 0:(sizeof arTestStrings)-1 do {
+		Buffer b; 
+		readText(strmIn,b)
+		sReadStr = stringOf b
+		test ("String Text Read Write Test " i "", sReadStr, arTestStrings[i] ) 
+	} 	
+	
+	close strmIn
+    
+    deleteFile sFileName
+}
+
+reportErrors()

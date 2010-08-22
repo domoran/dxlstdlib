@@ -1,0 +1,47 @@
+/*
+    Copyright 2010 by Mathias Mamsch
+    This file is part of the DOORS Standard Library 
+
+    The DOORS Standard Library  is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The DOORS Standard Library  is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <lib/testFramework.inc>
+#include <lib/globalSkip.inc>
+
+{
+	Skip sk = createString() 
+
+	put (sk, "Hallo", "Du") 
+	put (sk, "DX\\L", "Programmer")
+	
+	deleteGlobalSkip "MySkip"
+	
+	addGlobalStringSkip ("MySkip", true)  
+	
+	copyToGlobalSkip ("MySkip", sk) 
+	Skip globalSk = getGlobalSkip "MySkip"
+	test ("Find Global Skip Test", (null globalSk) "", "false") 
+	if (!null globalSk) {
+		string s = "NOTHING"
+		find (globalSk, "Hallo", s)
+		test ("Global Copy Test", s, "Du")
+		find (globalSk, "DX\\L", s)
+		test ("Global Copy Test", s, "Programmer")
+	}
+}
+
+
+
+
+
