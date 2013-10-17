@@ -16,28 +16,40 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
-if exist "setupDOORS.obj" del "setupDOORS.obj"
-if exist "setupDOORS.exe" del "setupDOORS.exe"
+REM Make sure we are in the directory of the makeit.bat file
+FOR /F "delims=; tokens=*" %%I in ("%0") DO pushd "%%~dpI" 
 
-\masm32\bin\ml /c /coff "setupDOORS.asm"
+FOR %%i IN ('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) DO ( 
+    IF EXIST "%%i:\masm32" set MASMPATH=%%i:\masm32
+)
+
+if exist "configureDOORS.obj" del "configureDOORS.obj"
+if exist "configureDOORS.exe" del "configureDOORS.exe"
+
+%MASMPATH%\bin\ml /c /coff "configureDOORS.asm"
 if errorlevel 1 goto errasm
 
-\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "setupDOORS.obj"
+%MASMPATH%\bin\PoLink /SUBSYSTEM:CONSOLE "configureDOORS.obj"
 if errorlevel 1 goto errlink
-dir "setupDOORS.*"
-copy setupDOORS.exe ..
+dir "configureDOORS.*"
+copy configureDOORS.exe ..
 goto TheEnd
 
-:errlink
-echo _
-echo Link error
-goto TheEnd
+  :errlink
+    echo _
+    echo Link error
+    goto TheEnd
 
-:errasm
-echo _
-echo Assembly Error
-goto TheEnd
+  :errasm
+    echo _
+    echo Assembly Error
+    goto TheEnd
+    
+  :errMasm
+    echo _
+    echo MASM could not be found
+    goto TheEnd
 
-:TheEnd
-
+  :TheEnd
+popd
 pause

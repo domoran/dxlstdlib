@@ -16,13 +16,20 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
+REM Make sure we are in the directory of the makeit.bat file
+FOR /F "delims=; tokens=*" %%I in ("%0") DO pushd "%%~dpI" 
+
+FOR %%i IN ('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) DO ( 
+    IF EXIST "%%i:\masm32" set MASMPATH=%%i:\masm32
+)
+
 if exist "runDOORS.obj" del "runDOORS.obj"
 if exist "runDOORS.exe" del "runDOORS.exe"
 
-\masm32\bin\ml /c /coff "runDOORS.asm"
+%MASMPATH%\bin\ml /c /coff "runDOORS.asm"
 if errorlevel 1 goto errasm
 
-\masm32\bin\PoLink /SUBSYSTEM:CONSOLE "runDOORS.obj"
+%MASMPATH%\bin\PoLink /SUBSYSTEM:CONSOLE "runDOORS.obj"
 if errorlevel 1 goto errlink
 dir "runDOORS.*"
 copy runDOORS.exe ..

@@ -16,16 +16,24 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
+REM Locate the DXL Standard Library Root Directory
+FOR /F "delims=; tokens=*" %%I in ("%0") DO pushd "%%~dpI" 
+:searchRoot 
+if exist LICENSE.txt (set DXLSTDLIBDIR=%CD%) else (cd .. & goto :searchRoot)
+popd
+
+IF NOT EXIST "%DXLSTDLIBDIR%\LICENSE.txt" EXIT /B
+
 REM --------- Extract pictures from the visio files ---------------------------
 
-REM cscript /nologo ..\doc\pictures\make_pictures.vbs
+REM cscript /nologo %DXLSTDLIBDIR%\doc\pictures\make_pictures.vbs
 
 REM --------- create documentation using the modified doxygen ---------------------------
-..\tools\dxl_doxygen\DXL_doxygen.exe ..\doc\config\Doxyfile
+%DXLSTDLIBDIR%\tools\dxl_doxygen\DXL_doxygen.exe %DXLSTDLIBDIR%\doc\config\Doxyfile
 if NOT "%ERRORLEVEL%" == "0" goto ErrorGen
 
 REM --------- Check for HTML Workshop installation ---------------------------
-FOR /F "delims=;" %%i in ('..\tools\getReg\getReg.exe HKCU "Software\Microsoft\HTML Help Workshop" InstallDir') DO SET HCCDIR=%%i
+FOR /F "delims=;" %%i in ('%DXLSTDLIBDIR%\tools\getReg\getReg.exe HKCU "Software\Microsoft\HTML Help Workshop" InstallDir') DO SET HCCDIR=%%i
 if "%HCCDIR%"=="NO_SUCH_KEY" goto HCCnotInstalled
 
 echo.
@@ -53,7 +61,7 @@ REM --------- Help workshop is not installed. If we are making a release this is
 REM --------- otherwise it is okay, we start the generated HTML help                            ---------------------------
 :HCCnotInstalled
 if "<%1>" == "<release>" goto releaseErr
-start ../doc/HTML/index.html
+start %DXLSTDLIBDIR%/doc/HTML/index.html
 goto AllOK
 
 
@@ -71,7 +79,7 @@ echo.
 if "<%1>" == "<release>" goto releaseErr
 
 pause
-start ../doc/HTML/index.html
+start %DXLSTDLIBDIR%/doc/HTML/index.html
 goto AllOK
 
 REM --------- There was an error during CHM compilation. For a release this is not acceptable.   -------------------------
@@ -93,7 +101,7 @@ echo To make a release you MUST have Microsoft HTML Workshop installed!
 echo Install it and try again
 echo.
 pause
-EXIT  
+EXIT
 
 :ErrorGen
 pause

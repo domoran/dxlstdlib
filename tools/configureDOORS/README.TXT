@@ -1,0 +1,1 @@
+configureDOORS.exe will ask you for your doors configuration (database, username, password) and store it to a file. runDOORS.exe will use the information in the file to log into doors. 

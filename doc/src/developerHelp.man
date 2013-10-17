@@ -137,9 +137,9 @@ The \em runDOORS.exe tool will do the following:
 The database, username and password can obviously not be determined automatically. To avoid having the developers enter their username and password
 everytime they want to run tests and to relieve them from changing the build scripts to include their custom database path, those parameters are 
 stored in the \em \%USERPROFILE\% directory in the file doorsLogin.dat. To allow the users to quickly setup this data, there is a custom tool called 
-\em setupDOORS.exe, which will read the information from the commandline and store it to the file. 
+\em configureDOORS.exe, which will read the information from the commandline and store it to the file. 
 
-\page developerhelp_page_setup The 'one click' setup - setupDOORS.exe
+\page developerhelp_page_setup The 'one click' setup - configureDOORS.exe
 
 A main goal in the development of the DXL standard library is, that it will run without any configuration on a PC that has a DOORS client installed. This means that <B>a developer 
 does NOT need to adapt any file that ships with the DXL standard library.</B> 

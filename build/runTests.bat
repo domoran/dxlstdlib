@@ -1,4 +1,4 @@
-@echo off
+@echo on
 
 REM    Copyright 2010 by Mathias Mamsch
 REM    This file is part of the DOORS Standard Library 
@@ -16,10 +16,12 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
-pushd
-cd ..
-for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
+REM Locate the DXL Standard Library Root Directory
+FOR /F "delims=; tokens=*" %%I in ("%0") DO pushd "%%~dpI"
+ 
+:searchRoot 
+if exist LICENSE.txt (set DXLSTDLIBDIR=%CD%) else (cd .. & goto :searchRoot)
 popd
 
-"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -f "%TEMP%" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
-REM pause
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -f "%TEMP%" -a "%DXLSTDLIBDIR%" -J "%DXLSTDLIBDIR%" -b "%DXLSTDLIBDIR%\build\runTests.dxl"
+pause

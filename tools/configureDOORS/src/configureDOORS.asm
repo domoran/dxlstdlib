@@ -42,10 +42,10 @@ comment * -----------------------------------------------------
       hyphen db 34,0
       
       loginMessage1 db "------------------------------------------------------------------",10
-                    db "                           setupDOORS V.1.0                       ",10
+                    db "                           configureDOORS V.1.0                       ",10
                     db "------------------------------------------------------------------",10,10,0
                     
-      loginMessage2 db "setupDOORS.exe will allow you to set the database configuration",10
+      loginMessage2 db "configureDOORS.exe will allow you to set the database configuration",10
                     db "for the DXL Standard Library. Once set, you can use runDOORS.exe",10
                     db "to start DOORS using the supplied credentials.",10,10,0
                     
@@ -54,7 +54,7 @@ comment * -----------------------------------------------------
       loginMessage4 db "If your DOORS database is configured to use no passwords, then",10
                     db "just leave the password blank.",10,10,0 
 
-      deleteMessage db "setupDOORS detected that you already supplied a DOORS setup:",10,10,0
+      deleteMessage db "configureDOORS detected that you already supplied a DOORS setup:",10,10,0
 
     .code
 
