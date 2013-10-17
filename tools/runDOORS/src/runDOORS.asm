@@ -43,15 +43,6 @@ comment * -----------------------------------------------------
       loginMessage1 db "------------------------------------------------------------------",10
                     db "                            runDOORS V.1.0                        ",10
                     db "------------------------------------------------------------------",10,10,0
-                    
-      loginMessage2 db "You need to specify the parameters for runDOORS.exe on the",10
-                    db "first start. You will now be asked to enter the database, ",10
-                    db "username and password used for starting Rational(R) DOORS(R).",10,10,0
-                    
-      loginMessage3 db "Your input will be stored UNENCRYPTED in the following file:",10,10,0
-      
-      loginMessage4 db "If your DOORS database is configured to use no passwords, then",10
-                    db "just leave the password blank.",10,10,0 
 
       dataShort db "-d",0
       dataLong db "-data",0
@@ -61,91 +52,22 @@ comment * -----------------------------------------------------
 
       userShort db "-u",0
       userLong db "-user",0
-
     .code
 
+
+; ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 start:
-
     call main
-; ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-
-
     exit
-
 ; ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-printColor MACRO text:req, color:req
-    IFNDEF @@STDOUT_HANDLE@@
-        .data? 
-            @@STDOUT_HANDLE@@ dd ?
-        .code
-        mov @@STDOUT_HANDLE@@, rv(GetStdHandle, STD_OUTPUT_HANDLE)
-    ENDIF
-    
-    invoke SetConsoleTextAttribute, @@STDOUT_HANDLE@@, color
-    print text
-ENDM
-
-
-getDOORSData proc
-    LOCAL hConsole:DWORD
-    LOCAL dataFile[256]: BYTE
-    LOCAL uName:DWORD
-    LOCAL database:DWORD
-    LOCAL passwd:DWORD
-    LOCAL fHandle:DWORD
-    LOCAL fData:DWORD
-
-    invoke ClearScreen
-
-    printColor addr loginMessage1, 01Eh
-    printColor addr loginMessage2, 08h    
-    printColor addr loginMessage3, 0Eh
-
-    ; calculate data file name
-    mov esi, env$("USERPROFILE")
-    .if esi == 0         
-        print "Error. Environment variable USERPROFILE was not found! Check your windows installation."
-        ret
-    .endif 
-
-    cst addr dataFile, esi 
-    mov eax, cat$(addr dataFile,  "\doorsLogin.dat")
-
-    ; output data file name
-    print "    "
-    print addr dataFile,10,10,13
-
-    printColor addr loginMessage4,08h
-
-    mov fData, alloc(1024) 
-    mov byte ptr [fData],0
-
-    mov esi, input ("Enter your Database (e.g. 36677@localhost): ")
-    mov esi, cat$(fData, esi, addr dotcomma )
-
-    mov esi, input("Enter your username (e.g. Administrator): ")    
-    mov esi, cat$(fData, esi, addr dotcomma )
-
-    mov esi, input("Enter your password (leave blank if none): ")
-    mov esi, cat$(fData, esi )
-    
-    mov esi, OutputFile(addr dataFile, fData, len(fData))
-    free fData
-
-    ret
-getDOORSData endp
 
 CHECK_SUCCESS macro msg:req
     .if (eax != ERROR_SUCCESS)
         print msg
         jmp endMain
     .endif
-
 endm
-
-
-
 
 main proc
     LOCAL regKey:DWORD
@@ -173,9 +95,10 @@ main proc
     mov hasPassword, 0
     mov hasUser, 0
     mov hasData, 0
+    
     mov dataFound, 0
-
-
+    
+    ; Read DOORS installation path from registry 
     mov strPtr, ptr$(strVar)
 
     invoke RegOpenKey, HKEY_LOCAL_MACHINE, addr doorsKey, addr keyHandle
@@ -185,19 +108,24 @@ main proc
         jmp endMain    
     .endif
 
+    ; Enumerate DOORS Versions, we take the first key 
     invoke RegEnumKey, keyHandle, 0, addr keyName, 255
     CHECK_SUCCESS "Could not determine installed DOORS versions."   
     
     mov eax, cat$(strPtr, addr doorsKey, "\", addr keyName)
 
+    ; Open the key
     invoke RegOpenKey, HKEY_LOCAL_MACHINE, strPtr, addr keyHandle
     CHECK_SUCCESS "Unkown error when opening DOORS registry key "
 
     mov strSize, 255
-    mov valType, REG_SZ    
+    mov valType, REG_SZ
+
+    ; Query the executables Directory 
     invoke RegQueryValueEx, keyHandle, addr execDir, NULL, addr valType, strPtr, addr strSize
     CHECK_SUCCESS "Could not get executables directory value."
     
+    ; build the DOORS executable path
     mov ecx, cat$(strPtr, "\doors.exe")
 
     .if rv(exist,strPtr) == 0
@@ -230,31 +158,31 @@ main proc
             mov hasData, rv(szCmp, addr keyName, addr dataShort) 
             or hasData, rv(szCmp, addr keyName, addr dataLong)
         .endif
-
-        inc argCount
         
+        inc argCount
     .endw
-    ; read config data
-    mov dataFound, rv(readDOORSData, addr database, addr user, addr password)
 
     ; start building the DOORS command line
-    mov newCmdLine, alloc(1024)
+    mov newCmdLine, alloc(2048)
     cst newCmdLine, addr hyphen
     mov eax, cat$(newCmdLine, strPtr, addr hyphen)
     
-    .if dataFound        
+    ; read config data
+    mov dataFound, rv(readDOORSData, addr database, addr user, addr password)
+
+    .if dataFound
         .if hasUser == 0 
-            mov eax, cat$(newCmdLine, " -u ", addr hyphen, addr user, addr hyphen)                
+            mov eax, cat$(newCmdLine, " -u ", addr hyphen, addr user, addr hyphen)
         .endif 
 
         .if hasPassword == 0 
             .if rv(szLen, addr password) > 0
-                mov eax, cat$(newCmdLine, " -p ", addr hyphen, addr password, addr hyphen)                
+                mov eax, cat$(newCmdLine, " -P ", addr hyphen, addr password, addr hyphen)
             .endif 
         .endif 
 
         .if hasData == 0 
-            mov eax, cat$(newCmdLine, " -d ", addr hyphen, addr database, addr hyphen)                
+            mov eax, cat$(newCmdLine, " -d ", addr hyphen, addr database, addr hyphen)
         .endif 
 
     .endif    
@@ -272,9 +200,11 @@ main proc
         mov eax, cat$(newCmdLine, " ", addr hyphen, addr keyName, addr hyphen)
 
         inc argCount
-        
     .endw
-
+    
+    ; print "Executing: "
+    ; print newCmdLine
+    
     invoke WinExec, newCmdLine, SW_SHOW	
 
     free newCmdLine
