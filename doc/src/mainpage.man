@@ -15,7 +15,7 @@ While the DXL part of the DXL standard library is still before its first officia
 environment. It has the following features: 
 - You don't need to configure where you installed your DOORS client (<B>automatically determined!</B>)
 - You don't need to configure where you installed the library (<B>automatically determined!</B>)
-- the \b doorsSetup tool will enable you to store your DOORS database setup, so 
+- the \b configureDOORS tool will enable you to store your DOORS database setup, so 
     - <B>running DOORS</B> with the standard library loaded is just "one click"
     - running the <B> test suite </B> is just "one click"
     - running the <B> profiling tests </B> (time measurements) is just "one click"

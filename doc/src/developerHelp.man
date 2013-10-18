@@ -26,7 +26,6 @@ there should be a directory structure like this (not all files included):
 \verbatim
 +--- build
 |       makeDocumentation.bat
-|       runDOORS.bat
 |       runProfiles.bat
 |       runTests.bat
 +--- doc
@@ -38,6 +37,7 @@ there should be a directory structure like this (not all files included):
 LICENSE.TXT
 README.TXT
 setup.bat
+runDOORS.bat
 \endverbatim
 
 \section developerhelp_section_setupstepone Step one - Setup
@@ -121,7 +121,7 @@ cd ..
 for /F "delims=;" %%i in ('cd') do set DXLSTDLIBDIR=%%i
 popd
 
-"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -b "%DXLSTDLIBDIR%\build\runTests.dxl" -a "%DXLSTDLIBDIR%" -J "%DXLSTDLIBDIR%"
 REM pause
 \endverbatim
 
