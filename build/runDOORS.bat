@@ -23,4 +23,4 @@ if exist LICENSE.txt (set DXLSTDLIBDIR=%CD%) else (cd .. & goto :searchRoot)
 popd
 
 
-"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -f "%TEMP%" -a "%DXLSTDLIBDIR%" -j "%DXLSTDLIBDIR%"
+"%DXLSTDLIBDIR%\tools\runDOORS\runDOORS.exe" -f "%TEMP%" -a "%DXLSTDLIBDIR%" -J "%DXLSTDLIBDIR%"
