@@ -1,0 +1,8 @@
+*.obj
+doc/html/*
+tools/configureDOORS/src/*.obj
+tools/configureDOORS/src/*.exe
+
+tools/getReg/src/*.exe
+tools/runDOORS/src/*.exe
+tools/runDXL/src/*.exe
