@@ -47,7 +47,10 @@ string trimWhitespace(string s) {
     \param sSearch the search string that shall be replaced
     \param sReplace the string by which \em sSearch shall be replaced
     \brief Replaces a part of the string by another string
-*/  
+*/
+
+Buffer gbuf_replace_sb1 = create(10000);
+Buffer gbuf_replace_sb2 = create(10000);  
 string replace (string sSource, string sSearch, string sReplace) {
     int iLen = length sSource
     if (iLen == 0) return ""
@@ -66,13 +69,16 @@ string replace (string sSource, string sSearch, string sReplace) {
     int pos = 0, d1,d2;    
     int i
     
+    gbuf_replace_sb1 = sSource; 
+    gbuf_replace_sb2 = sSearch;
+    
     while (pos < iLen) { 
-        char ch = sSource[pos]; 
+        char ch = gbuf_replace_sb2[pos]; 
         bool found = true
         
         if (ch != firstChar) {pos ++; s+= ch; continue}
         for (i = 1; i < iLenSearch; i++) 
-           if (sSource[pos+i] != sSearch[i]) { found = false; break }
+           if (gbuf_replace_sb1[pos+i] != gbuf_replace_sb2[i]) { found = false; break }
         if (!found) {pos++; s+= ch; continue}
         s += sReplace
         pos += iLenSearch
