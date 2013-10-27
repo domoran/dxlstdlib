@@ -1,3 +1,4 @@
+.settings
 *.obj
 doc/html/*
 tools/configureDOORS/src/*.obj
