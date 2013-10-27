@@ -49,42 +49,41 @@ string trimWhitespace(string s) {
     \brief Replaces a part of the string by another string
 */
 
-Buffer gbuf_replace_sb1 = create(10000);
-Buffer gbuf_replace_sb2 = create(10000);  
+Buffer gbuf_replace_search = create(10000);
+Buffer gbuf_replace_source = create(10000);
+Buffer gbuf_replace_result = create(10000);
+
 string replace (string sSource, string sSearch, string sReplace) {
-    int iLen = length sSource
+    gbuf_replace_source = sSource; 
+    gbuf_replace_search = sSearch;
+    int iLen = length gbuf_replace_source
     if (iLen == 0) return ""
     
-    int iLenSearch = length(sSearch)
-    
+    int iLenSearch = length(gbuf_replace_search);
     if (iLenSearch == 0) { 
         raiseError ("Parameter error", "in strings.inc/replace: search string must not be empty")
         return "" 
     }
     
     // read the first char for latter comparison -> speed optimization
-    char firstChar = sSearch[0]
-    
-    Buffer s = create() 
-    int pos = 0, d1,d2;    
+    char firstChar = gbuf_replace_search[0]
+
+    int pos = 0, d1,d2;
     int i
     
-    gbuf_replace_sb1 = sSource; 
-    gbuf_replace_sb2 = sSearch;
-    
+    gbuf_replace_result = "";    
     while (pos < iLen) { 
-        char ch = gbuf_replace_sb2[pos]; 
+        char ch = gbuf_replace_source[pos]; 
         bool found = true
-        
-        if (ch != firstChar) {pos ++; s+= ch; continue}
-        for (i = 1; i < iLenSearch; i++) 
-           if (gbuf_replace_sb1[pos+i] != gbuf_replace_sb2[i]) { found = false; break }
-        if (!found) {pos++; s+= ch; continue}
-        s += sReplace
+        if (ch != firstChar) { pos ++; gbuf_replace_result += ch; continue }
+        for (i = 1; i < iLenSearch; i++) {
+           if (gbuf_replace_source[pos+i] != gbuf_replace_search[i]) { found = false; break }
+        }
+        if (!found) { pos++; gbuf_replace_result += ch; continue}
+        gbuf_replace_result += sReplace
         pos += iLenSearch
     }
     
-    string result = stringOf s
-    delete s
+    string result = stringOf gbuf_replace_result
     return result
 }

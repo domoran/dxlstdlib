@@ -1,0 +1,147 @@
+/*
+    Copyright 2010 by Mathias Mamsch
+    This file is part of the DOORS Standard Library 
+
+    The DOORS Standard Library  is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The DOORS Standard Library  is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+// don't forget this before running the profiler ...
+pragma runLim, 0
+
+#include <lib/DXLstdlib.inc>
+#include <lib/test/profiler.inc>
+#include <lib/core/strings.inc>
+
+if (true) {
+    int i = 0; 
+    void func1() { for (i=0;i<1;i++) {} }
+    void func2() { for (i=0;i<10;i++) {} }
+    void func3() { for (i=0;i<100;i++) {} }
+    void func4() { for (i=0;i<1000;i++) {} }
+    profile ("For (0 elements) with comparison and assignment"    , 5, func1)
+    profile ("For (10 elements) with comparison and assignment"   , 5, func2)
+    profile ("For (100 elements) with comparison and assignment"  , 5, func3)
+    profile ("For (100 elements) with comparison and assignment"  , 5, func4)
+}
+
+if (true) {
+    int i = 0; 
+    void func1() { i = 0; while(i<1) { i++ } }
+    void func2() { i = 0; while(i<10) { i++ } }
+    void func3() { i = 0; while(i<100) { i++ } }
+    void func4() { i = 0; while(i<1000) { i++ } }
+    
+    profile ("While (0 elements) with comparison and assignment"    , 5, func1)
+    profile ("While (10 elements) with comparison and assignment"   , 5, func2)
+    profile ("While (100 elements) with comparison and assignment"  , 5, func3)
+    profile ("While (100 elements) with comparison and assignment"  , 5, func4)
+}
+
+// profile array index
+if (true)
+{
+    int i; 
+    int ar[128];
+    char ch[128];
+    for (i = 0; i < 128; i++) { ar[i] = i; ch[i] = charOf i } 
+    
+    void func1() { ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; }
+    void func2() { ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; }
+    void func3() { ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; }
+    void func4() { ar[127]; }
+
+    void funcch1() { ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; ch[0]; }
+    void funcch2() { ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; ch[64]; }
+    void funcch3() { ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; ch[127]; }
+    void funcch4() { ch[127]; }
+    
+    profile ("10 Integer Array Index at 0"  , 5, func1)
+    profile ("10 Integer Index at 64" , 5, func2)
+    profile ("10 Integer Index at 127", 5, func3)
+    profile ("1  Integer Index at 127", 5, func4)
+
+    profile ("10 Char Array Index at 0"  , 5, funcch1)
+    profile ("10 Char Array Index at 64" , 5, funcch2)
+    profile ("10 Char Array Index at 127", 5, funcch3)
+    profile ("1  Char Array Index at 127", 5, funcch4)
+}
+
+// profile string index without unicode
+if (true) 
+{
+    int i;
+    string ar = "12345678"
+    for (i = 0; i < 5; i++) ar = ar ar // make ar 128 Bytes 
+    
+    void func1() { ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; ar[0]; }
+    void func2() { ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; ar[64]; }
+    void func3() { ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; ar[127]; }
+    void func4() { ar[127]; }
+    
+    profile ("10 String Index at 0", 5, func1)
+    profile ("10 String Index at 64", 5, func2)
+    profile ("10 String Index at 127", 5, func3)
+    profile ("1 String Index at 127" , 5, func4)
+
+    ar = "1Ā345678"
+    
+    for (i = 0; i < 5; i++) ar = ar ar // make ar 128 Bytes
+    profile ("10 Unicode Index at 0", 5, func1)
+    profile ("10 Unicode Index at 64", 5, func2)
+    profile ("10 Unicode Index at 127", 5, func3)
+    profile ("1 Unicode Index at 127" , 5, func4)
+}
+
+if (true) {
+    int i;
+    int nr1 = 0x1234567; 
+    int nr2 = 0x7654321;
+    int r = 0;
+    
+    // a string to iterate a pointer over
+    string s = "01234567890123456789012345678901234567890123456789012345678901234567890123456789"
+    int vv = addr_ s; int &v = vv; int *p = addr_ s;
+    
+    void func1() { nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2; nr1+nr2;}
+    void func1a() { r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2; r=r+nr2;}
+    void func1b() { r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2; r+=nr2;}
+    void func1c() { r++; r++; r++; r++; r++; r++; r++; r++; r++; r++;}
+    void func1d() { v++; v++; v++; v++; v++; v++; v++; v++; v++; v++;}
+    void func1e() { &v; &v; &v; &v; &v; &v; &v; &v; &v; &v;}
+    void func1f() { *p; *p; *p; *p; *p; *p; *p; *p; *p; *p;}
+    
+    void func2() { nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2; nr1-nr2;}
+    void func3() { nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2; nr1*nr2;}
+    void func4() { nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2; nr1/nr2;}
+    void func5() { nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2; nr1&nr2;}
+    void func6() { nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2; nr1|nr2;}
+    void func7() { ~nr2; ~nr2; ~nr2; ~nr2; ~nr2; ~nr2; ~nr2; ~nr2; ~nr2; ~nr2;}
+    void func8() { nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2; nr1%nr2;}
+    
+    profile ("10 Integer Addition"     , 5, func1)
+    profile ("10 Integer Addition Plus Assignment", 5, func1a)
+    profile ("10 Integer plus Equals"     , 5, func1b)
+    profile ("10 Integer PlusPlus"        , 5, func1c)
+    profile ("10 Integer Ref PlusPlus"    , 5, func1d)
+    profile ("10 Integer Reference"       , 5, func1e)
+    profile ("10 Integer Dereference"     , 5, func1f)
+    
+    profile ("10 Integer Subtraction"  , 5, func2)
+    profile ("10 Integer Multiplication", 5, func3)
+    profile ("10 Integer Division"     , 5, func4)
+    profile ("10 Integer Logical And"  , 5, func5)
+    profile ("10 Integer Logical Or"   , 5, func6)
+    profile ("10 Integer Logical Not"  , 5, func7)
+    profile ("10 Integer Modulus"      , 5, func8)
+}
