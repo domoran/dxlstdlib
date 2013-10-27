@@ -30,11 +30,11 @@ print "Testing OLE Functions ... "
     olePut (x, "Visible", true) 
     int i
     test(fn, oleMethod (x, "PixelsToPoints", oleArgs <- 320 <- false, i), "")
-    test(fn, i "", "240")
+    test (fn, "240", i "")
     
     i = 0
     test(fn, oleMethod (x, "PixelsToPoints", oleArgs <- 640 <- false, i), "")
-    test(fn, i "", "480")
+    test (fn, "480", i "")
     
     oleMethod (x, "Quit")
 }

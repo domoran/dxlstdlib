@@ -47,8 +47,8 @@ print "Testing File Operation Functions ... "
 	for i in 0:(sizeof arTestBytes)-1 do {
 		readInt(strmIn,iReadNr)
 		strmIn >> sReadStr 
-		test ("Integer Binary Read Write Test " i "", iReadNr "", arTestBytes[i] "") 
-		test ("Integer Binary Read Write Test " i "", sReadStr, arTestBytes[i] "") 
+		test ("Integer Binary Read Write Test " i "", arTestBytes[i] "", iReadNr "") 
+		test ("Integer Binary Read Write Test " i "", arTestBytes[i] "", sReadStr) 
 	} 	
 	
 	close strmIn
@@ -83,7 +83,7 @@ print "Testing File Operation Functions ... "
 		Buffer b; 
 		readText(strmIn,b)
 		sReadStr = stringOf b
-		test ("String Text Read Write Test " i "", sReadStr, arTestStrings[i] ) 
+		test ("String Text Read Write Test " i "", arTestStrings[i] , sReadStr) 
 	} 	
 	
 	close strmIn

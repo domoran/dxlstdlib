@@ -26,13 +26,13 @@ print "Testing String Functions ... "
 {
     string fn = "trimWhitespace"
     
-    test(fn, trimWhitespace "123", "123")
-    test(fn, trimWhitespace "", "")
-    test(fn, trimWhitespace "a", "a")
-    test(fn, trimWhitespace " ", "")
-    test(fn, trimWhitespace "\n \t", "")
-    test(fn, trimWhitespace "\n test \t", "test")
-    test(fn, trimWhitespace "\r\n test it\t \r\n", "test it")    
+    test (fn, "123", trimWhitespace "123")
+    test (fn, "", trimWhitespace "")
+    test (fn, "a", trimWhitespace "a")
+    test (fn, "", trimWhitespace " ")
+    test (fn, "", trimWhitespace "\n \t")
+    test (fn, "test", trimWhitespace "\n test \t")
+    test (fn, "test it", trimWhitespace "\r\n test it\t \r\n")    
 }
 
 // -------------------------- Tests for replace  -------------------------
@@ -51,9 +51,9 @@ print "Testing String Functions ... "
     try() 
         replace("whassup?", "", "")
     if (catch(x), (errorCode x) == "Parameter error") {
-        test (fn, errorMessage() , "in strings.inc/replace: search string must not be empty")
+        test (fn, "in strings.inc/replace: search string must not be empty", errorMessage() )
     } else {
-        test (fn, "no error", "a parameter error shall have been raised with an empty searchString"); 
+        test (fn, "a parameter error shall have been raised with an empty searchString", "no error"); 
     }
 
 }

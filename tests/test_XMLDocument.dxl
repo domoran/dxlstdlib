@@ -39,39 +39,39 @@ void testCache (XMLDocument x, int sollCount) {
         
         testCache (x, 0)
         
-        test("Create XML Doc Test", (null x) "", "false")    
+        test ("Create XML Doc Test", "false", (null x) "")    
         delete_XMLDocument x     
         
-        test("Delete XML Doc Test", (null x) "", "true")    
+        test ("Delete XML Doc Test", "true", (null x) "")    
     }
 
     {
         XMLDocument x = create_XMLDocument()    
         
         XMLTag v = create_XMLTag (x, "Hallo") 
-        test("Create Root Node not NULL", (null v) "", "false")
-        test("Empty XML Test", getXML x, "")
+        test ("Create Root Node not NULL", "false", (null v) "")
+        test ("Empty XML Test", "", getXML x)
         testCache (x, 1)
                 
         appendChild (x, v) 
-        test("Append Root Node XML", getXML x , "<Hallo/>\r\n")
+        test ("Append Root Node XML", "<Hallo/>\r\n", getXML x )
 
         XMLTag v2 = create_XMLTag (x, "Dude") 
         appendChild(v, v2)         
-        test("Append Child Node XML", getXML x , "<Hallo><Dude/></Hallo>\r\n")
+        test ("Append Child Node XML", "<Hallo><Dude/></Hallo>\r\n", getXML x )
 
         testCache (x, 2)
         
         XMLTag v3 = create_XMLTag (x, "Fuck") 
         insertChildBefore(v2, v3) 
-        test("Insert Child Before XML", getXML x , "<Hallo><Fuck/><Dude/></Hallo>\r\n")
+        test ("Insert Child Before XML", "<Hallo><Fuck/><Dude/></Hallo>\r\n", getXML x )
         
         setText (v3, "Test What &>") 
-        test("setText", getXML x , "<Hallo><Fuck>Test What &amp;&gt;</Fuck><Dude/></Hallo>\r\n")
-        test("getText", getText v3 , "Test What &>")
+        test ("setText", "<Hallo><Fuck>Test What &amp;&gt;</Fuck><Dude/></Hallo>\r\n", getXML x )
+        test ("getText", "Test What &>", getText v3 )
 
         setText (v3, "1\nwanna \t be a kennedy") 
-        test("getText", getText v3 , "1\nwanna \t be a kennedy")
+        test ("getText", "1\nwanna \t be a kennedy", getText v3 )
         testCache (x, 3)
 
         delete_XMLTag v
@@ -92,59 +92,59 @@ void testCache (XMLDocument x, int sollCount) {
         
         v= appendTag (x, "xls:Document") 
         setAttribute (v, "xsl:Test", "Value") 
-        test ("setAttribute", getXML x, "<xls:Document xsl:Test=\"Value\"/>\r\n")
-        test ("getAttribute", getAttribute (v, "xsl:Test"), "Value")
-        test ("getAttribute", getAttribute (v, "NoAttribute"), "")
+        test ("setAttribute", "<xls:Document xsl:Test=\"Value\"/>\r\n", getXML x)
+        test ("getAttribute", "Value", getAttribute (v, "xsl:Test"))
+        test ("getAttribute", null, getAttribute (v, "xyz"))
                         
         delete_XMLTag v
-        delete_XMLDocument x     
+        delete_XMLDocument x
     }    
 
     
     {
         string validXML = "<?xml version=\"1.0\"?><food><vegetable>salad</vegetable><vegetable>zuchini</vegetable><fruit>banana</fruit></food>"     // "
         XMLDocument x = create_XMLDocument()            
-        test ("Load invalid XML" , loadXML (x, "<" validXML) "", "false" )
-        test ("Load valid XML"   , loadXML (x, validXML    ) "", "true"  )
+        test ("Load invalid XML" , "false", loadXML (x,  "<" validXML) "" )
+        test ("Load valid XML"   , "true" , loadXML (x, validXML) "")
         
         XMLNodelist nl = selectNodes (x, "/food/vegetable")
-        test ("XMLNodelist count", (count nl) "", "2") 
+        test ("XMLNodelist count", "2", (count nl) "") 
         
         XMLTag v = getItem (nl, 0) 
-        test ("XMLNodelist getItem", (null v) "", "false")        
-        test ("XMLNodelist selectNodes", getText v, "salad") 
+        test ("XMLNodelist getItem", "false", (null v) "")        
+        test ("XMLNodelist selectNodes", "salad", getText v) 
         delete_XMLTag v
         
         v = getItem (nl, 1) 
-        test ("XMLNodelist selectNodes", getText v, "zuchini") 
+        test ("XMLNodelist selectNodes", "zuchini", getText v) 
         delete_XMLTag v
         
         resetIterator nl
         
         v = nextNode nl
-        test ("XMLNodelist nextNode NOT NULL", (null v) "", "false")        
-        test ("XMLNodelist nextNode", getText v, "salad") 
+        test ("XMLNodelist nextNode NOT NULL", "false", (null v) "")        
+        test ("XMLNodelist nextNode", "salad", getText v) 
         delete_XMLTag v
         
         v = nextNode nl
-        test ("XMLNodelist nextNode", getText v, "zuchini") 
+        test ("XMLNodelist nextNode", "zuchini", getText v) 
         delete_XMLTag v
         
         resetIterator nl
         v = nextNode nl
-        test ("XMLNodelist resetIterators", getText v, "salad") 
+        test ("XMLNodelist resetIterators", "salad", getText v) 
         delete_XMLTag v        
 
         v = nextNode nl
         v = nextNode nl
-        test ("XMLNodelist no more items", (null v) "", "true")
+        test ("XMLNodelist no more items", "true", (null v) "")
 
         delete_NodeList nl 
         
-        test ("delete nodelist", (null nl) "", "true")
+        test ("delete nodelist", "true", (null nl) "")
         
         v = selectSingleNode (x, "/food/fruit")
-        test ("Select Single Node", getText v, "banana")
+        test ("Select Single Node", "banana", getText v)
         delete_XMLTag v
         
         delete_XMLDocument x
@@ -153,19 +153,19 @@ void testCache (XMLDocument x, int sollCount) {
     {
         string validXML = "<n1><n2/><n3/><n4><n5/><n6><n7/><n8/></n6></n4></n1>"     // "
         XMLDocument x = create_XMLDocument()            
-        test ("Load valid XML"   , loadXML (x, validXML    ) "", "true"  )
+        test ("Load valid XML"   , "true"    , loadXML (x, validXML) "" )
       
         XMLTag v = selectSingleNode (x, "/")
-        test ("Select Single node with result", (null v) "", "false") 
+        test ("Select Single node with result", "false", (null v) "") 
 
         XMLNodelist nl = childNodes v
-        test ("one root node test", (count nl) "", "1")
+        test ("one root node test", "1", (count nl) "")
         
         delete_NodeList nl
         
         v = selectSingleNode (x, "/n1")
         nl = childNodes v
-        test ("one root node test", (count nl) "", "3")
+        test ("one root node test", "3", (count nl) "")
         
         delete_NodeList nl
         
@@ -181,14 +181,14 @@ void testCache (XMLDocument x, int sollCount) {
 "    // "
 
         XMLDocument xdTransform = create_XMLDocument(); 
-        test ("Load transform XML"   , loadXML (xdTransform, validXML)  "", "true"  )
+        test ("Load transform XML"   , "true", loadXML (xdTransform, validXML)  "")
 
         XMLDocument xdStyle = create_XMLDocument(); 
-        test ("Load transform stylesheet"   , loadXML (xdStyle, xlstSheet)  "", "true"  )
+        test ("Load transform stylesheet", "true", loadXML (xdStyle, xlstSheet)  "")
 
     
         string x = transformDocument (xdTransform, xdStyle) 
-        test ("Transformation test", x, "Whaasup?! from Dude") 
+        test ("Transformation test", "Whaasup?! from Dude", x) 
 
         delete_XMLDocument xdTransform
         delete_XMLDocument xdStyle        

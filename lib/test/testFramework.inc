@@ -18,14 +18,14 @@
 
 int gErrorCount = 0
 
-void reportTestError_ (string fn, string is, string should, int offset) {    
+void reportTestError_ (string fn, string should, string is, int offset) {    
     print "Error in " (getCaller (3+offset) ) " for function '" fn "'.\nResult: |" is "|\nShould be: |" should "|\n"    
     gErrorCount++
 }
 
-void test (string fn, string is, string should, int callerOffset) { if (is != should) reportTestError_(fn, is, should, callerOffset) }
+void test (string fn, string should, string is, int callerOffset) { if (is != should) reportTestError_(fn, should, is, callerOffset) }
 
-void test (string fn, string is, string should) { test (fn, is, should, 1) }
+void test (string fn, string should, string is) { test (fn, should, is, 2) }
 
 void reportErrors() {
     if (gErrorCount == 0) print "OK\n"

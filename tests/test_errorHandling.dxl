@@ -27,23 +27,26 @@ print "Testing Error Handling "
     string fn = "try/catch"
     try() 
     
-    test (fn, catch() "", "false") 
-    test (fn, errorCode()    , "") 
-    test (fn, errorMessage() , "") 
-    test (fn, errorPosition(), "") 
+    test (fn, "false", catch() "") 
+    test (fn, "", errorCode()    ) 
+    test (fn, "", errorMessage() ) 
+    test (fn, "", errorPosition())
+    // Note the error is created on line 38! If you insert code above you need to modify the below line numbers
+    string errorLocation = replace(getCaller(2), "35", "38"); 
 
     try() 
         raiseError ("Bad Error", "Bad Error Message") 
-    test (fn, catch() "", "true") 
-    test (fn, errorCode()    , "Bad Error") 
-    test (fn, errorMessage() , "Bad Error Message") 
-    string spos = errorPosition()
-    test (fn, spos[length(spos)-27:length(spos)-3], "test_errorHandling.dxl:34") 
+    test (fn, "true", catch() "") 
+    test (fn, "Bad Error", errorCode()    ) 
+    test (fn, "Bad Error Message", errorMessage() )
+    
+    // if we are executing in interactive mode, the traceback will read Line:34 instead of mentioning the filename
+    test (fn, errorLocation, errorPosition()) 
 
-    test (fn, catch() "", "false") 
-    test (fn, errorCode()    , "") 
-    test (fn, errorMessage() , "") 
-    test (fn, errorPosition(), "")     
+    test (fn, "false", catch() "") 
+    test (fn, "", errorCode()    ) 
+    test (fn, "", errorMessage() ) 
+    test (fn, "", errorPosition())     
 }
 
 reportErrors()
