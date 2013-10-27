@@ -16,7 +16,10 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <lib/testFramework.inc>
+#include <lib/DXLstdlib.inc>
+#include <lib/test/testFramework.inc>
+
+#include <lib/core/oleHelpers.inc>
 #include <lib/XMLDocument.inc>
 
 print "Testing XML Functions ... "

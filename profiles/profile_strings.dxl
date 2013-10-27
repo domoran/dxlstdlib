@@ -20,8 +20,8 @@
 pragma runLim, 0
 
 #include <lib/DXLstdlib.inc>
-#include <lib/profiler.inc>
-#include <lib/strings.inc>
+#include <lib/test/profiler.inc>
+#include <lib/core/strings.inc>
 
 // trimWhitespace profiling
 {

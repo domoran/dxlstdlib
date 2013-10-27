@@ -16,7 +16,9 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <lib/testFramework.inc>
+#include <lib/Dxlstdlib.inc>
+#include <lib/core/strings.inc>
+#include <lib/test/testFramework.inc>
 
 print "Testing Error Handling "
 

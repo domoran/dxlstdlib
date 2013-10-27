@@ -15,9 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#include <lib/testFramework.inc>
-#include <lib/fileOperations.inc>
+#include <lib/DXLstdlib.inc>
+#include <lib/test/testFramework.inc>
+#include <lib/core/fileOperations.inc>
 
 print "Testing File Operation Functions ... "
 

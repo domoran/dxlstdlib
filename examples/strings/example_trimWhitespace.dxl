@@ -1,4 +1,4 @@
-#include <lib/strings.inc>
+#include <lib/core/strings.inc>
 
 string s = "\n\t\r  Test String\nWith three lines\nAnd lots of spaces! \n\r\t   "
 string result = trimWhitespace s 

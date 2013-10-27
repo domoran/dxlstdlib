@@ -50,8 +50,6 @@ This example will produce the following XML:
 \class XMLNodelist
 */
 
-#include <lib/general_functions/oleHelpers.inc>
-
 bool xmlNoValue ( string s ) { 
     if (s[0:7] == "Method '") return true
     return false

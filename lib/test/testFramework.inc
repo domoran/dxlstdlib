@@ -16,32 +16,20 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <lib/testFramework.inc>
-#include <lib/globalSkip.inc>
+int gErrorCount = 0
 
-{
-	Skip sk = createString() 
-
-	put (sk, "Hallo", "Du") 
-	put (sk, "DX\\L", "Programmer")
-	
-	deleteGlobalSkip "MySkip"
-	
-	addGlobalStringSkip ("MySkip", true)  
-	
-	copyToGlobalSkip ("MySkip", sk) 
-	Skip globalSk = getGlobalSkip "MySkip"
-	test ("Find Global Skip Test", (null globalSk) "", "false") 
-	if (!null globalSk) {
-		string s = "NOTHING"
-		find (globalSk, "Hallo", s)
-		test ("Global Copy Test", s, "Du")
-		find (globalSk, "DX\\L", s)
-		test ("Global Copy Test", s, "Programmer")
-	}
+void reportTestError_ (string fn, string is, string should, int offset) {    
+    print "Error in " (getCaller (3+offset) ) " for function '" fn "'.\nResult: |" is "|\nShould be: |" should "|\n"    
+    gErrorCount++
 }
 
+void test (string fn, string is, string should, int callerOffset) { if (is != should) reportTestError_(fn, is, should, callerOffset) }
 
+void test (string fn, string is, string should) { test (fn, is, should, 1) }
 
-
+void reportErrors() {
+    if (gErrorCount == 0) print "OK\n"
+    if (gErrorCount == 1) print "1 Error\n"
+    if (gErrorCount > 1) print gErrorCount " Errors\n"
+}
 

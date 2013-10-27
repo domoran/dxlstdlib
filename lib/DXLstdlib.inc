@@ -1,7 +1,39 @@
-#include <lib/general_functions/getCaller.inc>
+/*
+    Copyright 2010 by Mathias Mamsch
+    This file is part of the DOORS Standard Library 
 
-Skip gsk_stdlib_globals_ = createString();
+    The DOORS Standard Library  is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    The DOORS Standard Library  is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 bool gsk_stdlib_error_ignore_ = false
+
+string getCaller (int nr) {
+    string s = dxlHere(); 
+    int len = length s    
+    int posStart = 0; int posEnd = 0; int count = 0; 
+    // find the nr-th newline character in s
+    while (posEnd < len && (s[posEnd] != '\n' || ++count < nr)) posEnd++;
+    // store the start point
+    posStart = posEnd; posEnd++
+    // find the next newline, store the endPoint
+    while (posEnd < len && s[posEnd] != '\n') posEnd ++
+    // Skip the newline at the end of the line
+    if (posStart < len-2) posStart++
+    // Skip the newline at the start of the line
+    if (posEnd   > 0    ) posEnd--
+    return s[posStart:posEnd]
+}
 
 //! \brief RuntimeError is an internal class for generating runtime errors in the DXL standard library. 
 struct RuntimeError {};
@@ -32,7 +64,7 @@ bool catch(RuntimeError &e) {
         gsk_stdlib_currentError_ = null
     } else {
         // There is no current error ... reset the catch error ...
-        // -> cought error can be accessed until the next catch ...
+        // -> caught error can be accessed until the next catch ...
         gsk_stdlib_catchError_ = null
     }
     

@@ -1,14 +1,15 @@
+
+OleAutoArgs oleHelpers_inc_args = null
+
 void clearOleArgs () { 
-    OleAutoArgs x = null; 
-    if (find (gsk_stdlib_globals_, "oleHelpers.inc_args", x)) { if (!null x) delete x }
+    if (!null oleHelpers_inc_args) { delete oleHelpers_inc_args; oleHelpers_inc_args = null; }
 }
 
 // oleArgs singleton
 OleAutoArgs oleArgs () { 
     clearOleArgs(); 
-    OleAutoArgs x = create OleAutoArgs;
-    put (gsk_stdlib_globals_, "oleHelpers.inc_args", x, true)
-    return x
+    oleHelpers_inc_args = create OleAutoArgs    
+    return oleHelpers_inc_args;
 }
 
 void checkOLE (string s) { if (!null s) raiseError ("OLE Error in " (getCaller 3) "\ncalled from: " (getCaller 4) "\n", s) }

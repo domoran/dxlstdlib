@@ -16,7 +16,7 @@
     along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <lib/autorun.inc>
+#include <lib/test/autorun.inc>
 
 string s = dxlHere() 
 
