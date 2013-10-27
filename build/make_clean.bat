@@ -17,9 +17,11 @@ REM    You should have received a copy of the GNU General Public License
 REM    along with the DOORS Standard Library.  If not, see <http://www.gnu.org/licenses/>.
 
 REM Locate the DXL Standard Library Root Directory
-FOR /F "delims=; tokens=*" %%I in ("%0") DO pushd "%%~dpI" 
+pushd
+FOR /F "delims=; tokens=*" %%I in ("%0") DO CD /D "%%~dpI"
 :searchRoot 
 if exist LICENSE.txt (set DXLSTDLIBDIR=%CD%) else (cd .. & goto :searchRoot)
+popd
 
 IF NOT EXIST "%DXLSTDLIBDIR%\LICENSE.txt" EXIT /B
 
