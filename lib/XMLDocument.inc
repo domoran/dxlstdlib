@@ -364,7 +364,9 @@ void setAttribute (XMLTag xt, string sAttrName, string sAttrValue) {
 */  
 string getAttribute (XMLTag xt, string sAttrName) {
     string result = ""
-    xmlCheckOLE ( oleMethod ( getOleHandle_ xt, "getAttribute", oleArgs <- sAttrName, result )  )
+    sOleResult =  oleMethod ( getOleHandle_ xt, "getAttribute", oleArgs <- sAttrName, result )
+     
+    if (!null sOleResult) result = null
     return result
 }
 
