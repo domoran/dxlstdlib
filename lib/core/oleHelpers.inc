@@ -32,6 +32,7 @@ OleAutoArgs ::<-(OleAutoArgs x, Array ar) {
     if (argType == "int"   ) {int        s = (int        get(ar, 0,2)); put (x, argName, s); }
     if (argType == "bool"  ) {bool       s = (bool       get(ar, 0,2)); put (x, argName, s); }
     if (argType == "OLE"   ) {OleAutoObj s = (OleAutoObj get(ar, 0,2)); put (x, argName, s); }
+    delete ar
     return x; 
 }
 
